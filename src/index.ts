@@ -8,13 +8,24 @@ export function AuthRequest (
     crypto:Implementation,
     startingSeq:number|Storage
 ):KyInstance {
+    let seq:number
+    if (typeof startingSeq !== 'number') {
+        const n = startingSeq.getItem('__seq')
+        if (n) seq = parseInt(n)
+        else seq = 0
+    }
+
     return ky.create({
         hooks: {
             beforeRequest: [
                 async req => {
-                    const seq = typeof startingSeq === 'number' ?
-                        startingSeq :
-                        1
+                    // increment seq
+                    // and save it in localstorage
+                    seq++
+                    if (startingSeq instanceof Storage) {
+                        startingSeq.setItem('__seq', String(seq))
+                    }
+
                     req.headers.set('Authorization',
                         await createHeader(crypto, seq))
                 }
