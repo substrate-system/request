@@ -6,6 +6,8 @@
     }
   },
   "rules": {
+    "multiline-ternary": ["error", "always-multiline"],
+    "operator-linebreak": ["error", "after"],
     "no-multiple-empty-lines": [
       "error",
       {
