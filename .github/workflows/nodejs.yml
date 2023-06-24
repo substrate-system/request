@@ -16,6 +16,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: create env file
+        run: |
+          touch .env
+          echo "NPM_TOKEN=${{ secrets.NPM_TOKEN }}" >> .env
       - name: npm install, build
         run: |
           npm install
