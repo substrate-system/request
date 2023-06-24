@@ -1,5 +1,9 @@
 import { Implementation } from '@oddjs/odd/components/crypto/implementation'
-import { SignedRequest, create as createMsg } from '@ssc-hermes/message'
+import {
+    SignedRequest,
+    create as createMsg,
+    verify as msgVerify
+} from '@ssc-hermes/message'
 import { KyInstance } from 'ky/distribution/types/ky'
 
 // need to pass in starting sequence number
@@ -50,4 +54,9 @@ export async function createHeader (crypto:Implementation, seq:number)
 export function parseHeader (header:string):SignedRequest<{ seq:number }> {
     const json = atob(header.split(' ')[1])
     return JSON.parse(json)
+}
+
+export function verify (header:string):Promise<boolean> {
+    const value = parseHeader(header)
+    return msgVerify(value)
 }

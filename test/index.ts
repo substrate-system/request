@@ -1,7 +1,7 @@
 import { test } from '@socketsupply/tapzero'
 import { assemble } from '@oddjs/odd'
 import { components } from '@ssc-hermes/node-components'
-import { AuthRequest, createHeader, parseHeader } from '../dist/index.js'
+import { AuthRequest, createHeader, parseHeader, verify } from '../dist/index.js'
 import ky from 'ky-universal'
 
 let crypto
@@ -57,4 +57,8 @@ test('make another request', async t => {
             ]
         }
     })
+})
+
+test('verify the header', async t => {
+    t.equal(await verify(header), true, 'should validate a valid token')
 })
