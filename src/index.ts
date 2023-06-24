@@ -22,7 +22,13 @@ export function AuthRequest (
 
     if (typeof startingSeq !== 'number') {  // is local storage
         const n = startingSeq.getItem('__seq')
-        if (n) seq = parseInt(n)
+        if (n) {
+            try {
+                seq = parseInt(n)
+            } catch (err) {
+                // do nothing
+            }
+        }
     }
 
     return ky.create({
