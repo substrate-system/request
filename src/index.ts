@@ -8,11 +8,11 @@ export function AuthRequest (
     crypto:Implementation,
     startingSeq:number|Storage
 ):KyInstance {
-    let seq:number
-    if (typeof startingSeq !== 'number') {
+    let seq:number = 0
+
+    if (typeof startingSeq !== 'number') {  // is local storage
         const n = startingSeq.getItem('__seq')
         if (n) seq = parseInt(n)
-        else seq = 0
     }
 
     return ky.create({
@@ -22,7 +22,10 @@ export function AuthRequest (
                     // increment seq
                     // and save it in localstorage
                     seq++
-                    if (startingSeq instanceof Storage) {
+                    if (
+                        (typeof Storage !== 'undefined') &&
+                        (startingSeq instanceof Storage)
+                    ) {
                         startingSeq.setItem('__seq', String(seq))
                     }
 
@@ -36,14 +39,15 @@ export function AuthRequest (
 
 export async function createHeader (crypto:Implementation, seq:number)
 :Promise<string> {
-    const newHeader = JSON.stringify(await createMsg(crypto, { seq }))
-    return `Bearer ${newHeader}`
+    const newToken = btoa(JSON.stringify(await createMsg(crypto, { seq })))
+    return `Bearer ${newToken}`
 }
 
 /**
  * Take the header returned from `createHeader`
+ * @returns A parsed JSON value (an object)
  */
 export function parseHeader (header:string):SignedRequest<{ seq:number }> {
-    const json = header.split(' ')[1]
+    const json = atob(header.split(' ')[1])
     return JSON.parse(json)
 }

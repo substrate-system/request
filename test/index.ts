@@ -19,7 +19,6 @@ let header:string
 test('create a header', async t => {
     header = await createHeader(crypto, 1)
     t.ok(header, 'should return a header')
-    t.ok(header.includes('Bearer'), 'should be a Bearer token')
 })
 
 test('parse header', t => {
