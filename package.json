@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@oddjs/odd": "^0.37.2",
-    "@ssc-hermes/message": "^0.4.1",
+    "@ssc-hermes/message": "^0.4.7",
     "uint8arrays": "^4.0.4"
   },
   "devDependencies": {
