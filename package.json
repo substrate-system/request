@@ -60,7 +60,8 @@
   "keywords": [
     "request",
     "headers",
-    "webcrypto"
+    "webcrypto",
+    "http"
   ],
   "bugs": {
     "url": "https://github.com/ssc-hermes/request/issues"
