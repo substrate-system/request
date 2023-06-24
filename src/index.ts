@@ -6,7 +6,13 @@ import {
 } from '@ssc-hermes/message'
 import { KyInstance } from 'ky/distribution/types/ky'
 
-// need to pass in starting sequence number
+/**
+ * Create a `ky` that will add a signed Bearer token to each request.
+ * @param ky Ky library
+ * @param {Implementation} crypto The crypto object from odd
+ * @param startingSeq The number to start from, or a localstorage instance
+ * @returns {KyInstance}
+ */
 export function AuthRequest (
     ky:KyInstance,
     crypto:Implementation,

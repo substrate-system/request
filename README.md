@@ -1,6 +1,6 @@
 # request ![tests](https://github.com/ssc-hermes/request/actions/workflows/nodejs.yml/badge.svg)
 
-Use a `Bearer` token in the request to authenticate. This will sign an intenger with the given [odd instance](https://github.com/oddsdk/ts-odd/blob/main/src/components/crypto/implementation.ts#L14), suitable for an access-control type of auth.
+Use a `Bearer` token in the request to authenticate identity. This will sign an integer with the given [odd instance](https://github.com/oddsdk/ts-odd/blob/main/src/components/crypto/implementation.ts#L14), suitable for an access-control type of auth.
 
 The sequence number is an always incrementing integer. It is expected that a server would check that the sequence is larger than the previous sequence, and also check that the signature is valid.
 
@@ -22,7 +22,6 @@ We also depend the library [ky](https://github.com/sindresorhus/ky) for requests
 
 ### create an instance
 In a web browser, pass an instance of [ky](https://github.com/sindresorhus/ky), and return an extended instance of `ky` that will automatically add a signature to the header as a `Bearer` token.
-
 
 ```ts
 import { test } from '@socketsupply/tapzero'
