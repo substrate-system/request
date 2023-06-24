@@ -8,6 +8,11 @@ You can pass in either an integer or a localstorage instance. If you pass a loca
 
 This library will increment the sequence number for each request, and if a Storage instance was passed in, it will re-save the sequence number on every request.
 
+## install
+```
+npm i -S @ssc-hermes/request
+```
+
 ## dependencies
 This should be ergonomic to use with the existing [odd crypto library](https://github.com/oddsdk/ts-odd).
 
