@@ -4,9 +4,9 @@ Use a `Bearer` token in the request to authenticate identity. This will sign an 
 
 The sequence number is an always incrementing integer. It is expected that a server would check that the sequence is larger than the previous sequence, and also check that the signature is valid.
 
-You can pass in either an integer or a localstorage instance. If you pass a localstorage instance, it will read the index `'__seq'`, which should be a number. If there is not a number stored there, we will start at `0`.
+You can pass in either an integer or a localStorage instance. If you pass a localStorage instance, it will read the index `'__seq'`, which should be a number. If there is not a number stored there, we will start at `0`.
 
-This library will increment the sequence number for each request, and if a Storage instance was passed in, it will re-save the sequence number on every request.
+This library will increment the sequence number for each request. If a Storage instance was passed in, it will re-save the sequence number on every request.
 
 ## install
 ```
