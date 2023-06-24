@@ -1,4 +1,9 @@
 {
+  "name": "@ssc-hermes/request",
+  "description": "Use a `Bearer` token with web crypto to authenticate",
+  "directories": {
+    "test": "test"
+  },
   "type": "module",
   "version": "0.0.1",
   "main": "dist/index.js",
@@ -45,5 +50,19 @@
     "typescript": "^5.0.2"
   },
   "author": "nichoth <nichoth@gmail.com> (https://nichoth.com)",
-  "license": "AGPL-3.0-or-later"
+  "license": "AGPL-3.0-or-later",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ssc-hermes/request.git"
+  },
+  "keywords": [
+    "request",
+    "headers",
+    "webcrypto"
+  ],
+  "bugs": {
+    "url": "https://github.com/ssc-hermes/request/issues"
+  },
+  "homepage": "https://github.com/ssc-hermes/request#readme"
 }
