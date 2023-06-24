@@ -1,6 +1,6 @@
 # request ![tests](https://github.com/ssc-hermes/request/actions/workflows/nodejs.yml/badge.svg)
 
-Use a `Bearer` token in the request to authenticate. This will sign an intenger with the given [odd instance](https://github.com/oddsdk/ts-odd/blob/main/src/components/crypto/implementation.ts#L14). This is suitable for an access-control type of auth.
+Use a `Bearer` token in the request to authenticate. This will sign an intenger with the given [odd instance](https://github.com/oddsdk/ts-odd/blob/main/src/components/crypto/implementation.ts#L14), suitable for an access-control type of auth.
 
 The sequence number is an always incrementing integer. It is expected that a server would check that the sequence is larger than the previous sequence, and also check that the signature is valid.
 
