@@ -35,11 +35,10 @@
     }
   },
   "dependencies": {
-    "@oddjs/odd": "^0.37.2",
-    "@ssc-hermes/message": "^0.4.7",
-    "uint8arrays": "^4.0.4"
+    "@ssc-hermes/message": "^0.4.7"
   },
   "devDependencies": {
+    "@oddjs/odd": "^0.37.2",
     "@socketsupply/tapzero": "^0.7.1",
     "@ssc-hermes/node-components": "^0.1.12",
     "@typescript-eslint/parser": "^5.55.0",
