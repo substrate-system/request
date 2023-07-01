@@ -1,9 +1,9 @@
 import { test } from '@socketsupply/tapzero'
 import { assemble } from '@oddjs/odd'
 import { components } from '@ssc-hermes/node-components'
-import { AuthRequest, createHeader, parseHeader, verify } from '../dist/index.js'
 import ky from 'ky-universal'
 import { LocalStorage } from 'node-localstorage'
+import { AuthRequest, createHeader, parseHeader, verify } from '../dist/index.js'
 
 // for localStorage test
 globalThis.Storage = LocalStorage
