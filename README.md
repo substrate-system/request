@@ -66,3 +66,44 @@ test('verify the header', async t => {
     // also make sure that the sequence number is greater than the previous
 })
 ```
+
+### use localStorage for the sequence number
+Pass in an instance of `localStorage`, and we will save the sequence number to `__seq`.
+
+```ts
+import { test } from '@socketsupply/tapzero'
+import { assemble } from '@oddjs/odd'
+import { components } from '@ssc-hermes/node-components'
+import ky from 'ky-universal'
+import { LocalStorage } from 'node-localstorage'
+import { AuthRequest, createHeader, parseHeader, verify } from '@ssc-hermes/request'
+
+test('create an instance with localStorage', async t => {
+    const program = await assemble({
+        namespace: { creator: 'test', name: 'testing' },
+        debug: false
+    }, components)
+    const crypto = program.components.crypto
+
+    const localStorage = new LocalStorage('./test-storage')
+    localStorage.setItem('__seq', 3)
+    const req = AuthRequest(ky, crypto, localStorage)
+
+    await req.get('https://example.com', {
+        hooks: {
+            afterResponse: [
+                (request:Request) => {
+                    const obj = parseHeader(
+                        request.headers.get('Authorization') as string
+                    )
+                    t.equal(obj.seq, 4,
+                        'should use localStorage to create the sequence')
+                }
+            ]
+        }
+    })
+
+    const seq = localStorage.getItem('__seq')
+    t.equal(seq, 4, 'should save the sequence number to localStorage')
+})
+```
