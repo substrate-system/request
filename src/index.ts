@@ -26,7 +26,7 @@ export function AuthRequest (
             try {
                 seq = parseInt(n)
             } catch (err) {
-                // do nothing
+                seq = 0
             }
         }
     }

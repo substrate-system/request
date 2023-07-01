@@ -5,4 +5,5 @@ src/*.js
 test/*.js
 dist
 .env
+test-storage
 

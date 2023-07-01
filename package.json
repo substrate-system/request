@@ -45,6 +45,7 @@
     "esbuild": "^0.15.18",
     "ky": "^0.33.3",
     "ky-universal": "^0.11.0",
+    "node-localstorage": "^2.2.1",
     "standardx": "^7.0.0",
     "tap-arc": "^0.3.5",
     "typescript": "^5.0.2"

@@ -3,6 +3,10 @@ import { assemble } from '@oddjs/odd'
 import { components } from '@ssc-hermes/node-components'
 import { AuthRequest, createHeader, parseHeader, verify } from '../dist/index.js'
 import ky from 'ky-universal'
+import { LocalStorage } from 'node-localstorage'
+
+// for localStorage test
+globalThis.Storage = LocalStorage
 
 let crypto
 test('setup', async t => {
@@ -62,4 +66,25 @@ test('make another request', async t => {
 
 test('verify the header', async t => {
     t.equal(await verify(header), true, 'should validate a valid token')
+})
+
+test('create an instance with localStorage', async t => {
+    const localStorage = new LocalStorage('./test-storage')
+    const req = AuthRequest(ky, crypto, localStorage)
+
+    await req.get('https://example.com', {
+        hooks: {
+            afterResponse: [
+                (request:Request) => {
+                    const obj = parseHeader(
+                        request.headers.get('Authorization') as string
+                    )
+                    t.equal(obj.seq, 1, 'should add the header')
+                }
+            ]
+        }
+    })
+
+    const seq = localStorage.getItem('__seq')
+    t.equal(seq, 1, 'should save the sequence number to localStorage')
 })
