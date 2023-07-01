@@ -1,6 +1,6 @@
 {
   "name": "@ssc-hermes/request",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Use a `Bearer` token with web crypto to authenticate",
   "directories": {
     "test": "test"
