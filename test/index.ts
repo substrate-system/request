@@ -28,6 +28,9 @@ test('create a header', async t => {
 test('parse header', t => {
     const obj = parseHeader(header)
     t.equal(obj.seq, 1, 'should have the right sequence number')
+    t.ok(obj.author.includes('did:key'),
+        'should have the writer DID as "author" key')
+    t.equal(typeof obj.signature, 'string', 'should have a signature')
 })
 
 let req
@@ -70,6 +73,7 @@ test('verify the header', async t => {
 
 test('create an instance with localStorage', async t => {
     const localStorage = new LocalStorage('./test-storage')
+    localStorage.setItem('__seq', 3)
     const req = AuthRequest(ky, crypto, localStorage)
 
     await req.get('https://example.com', {
@@ -79,12 +83,13 @@ test('create an instance with localStorage', async t => {
                     const obj = parseHeader(
                         request.headers.get('Authorization') as string
                     )
-                    t.equal(obj.seq, 1, 'should add the header')
+                    t.equal(obj.seq, 4,
+                        'should use localStorage to create the sequence')
                 }
             ]
         }
     })
 
     const seq = localStorage.getItem('__seq')
-    t.equal(seq, 1, 'should save the sequence number to localStorage')
+    t.equal(seq, 4, 'should save the sequence number to localStorage')
 })
