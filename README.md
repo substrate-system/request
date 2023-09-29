@@ -1,4 +1,4 @@
-# request ![tests](https://github.com/ssc-hermes/request/actions/workflows/nodejs.yml/badge.svg)
+# request ![tests](https://github.com/ssc-half-light/request/actions/workflows/nodejs.yml/badge.svg)
 
 Use a `Bearer` token in an HTTP request to verify identity. This will sign an integer with the given [odd instance](https://github.com/oddsdk/ts-odd/blob/main/src/components/crypto/implementation.ts#L14), suitable for an access-control type of auth.
 
@@ -8,7 +8,7 @@ You can pass in either an integer or a localStorage instance. If you pass a loca
 
 ## install
 ```
-npm i -S @ssc-hermes/request
+npm i -S @ssc-half-light/request
 ```
 
 ## dependencies
@@ -23,7 +23,7 @@ In a web browser, pass an instance of [ky](https://github.com/sindresorhus/ky), 
 
 ```ts
 import { test } from '@socketsupply/tapzero'
-import { AuthRequest, parseHeader, verify } from '@ssc-hermes/request'
+import { AuthRequest, parseHeader, verify } from '@ssc-half-light/request'
 import ky from 'ky-universal'
 
 let header:string
@@ -74,7 +74,7 @@ import { assemble } from '@oddjs/odd'
 import { components } from '@ssc-hermes/node-components'
 import ky from 'ky-universal'
 import { LocalStorage } from 'node-localstorage'
-import { AuthRequest, parseHeader } from '@ssc-hermes/request'
+import { AuthRequest, parseHeader } from '@ssc-half-light/request'
 
 test('create an instance with localStorage', async t => {
     const program = await assemble({
