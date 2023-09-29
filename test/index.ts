@@ -3,7 +3,13 @@ import { assemble } from '@oddjs/odd'
 import { components } from '@ssc-hermes/node-components'
 import ky from 'ky-universal'
 import { LocalStorage } from 'node-localstorage'
-import { AuthRequest, createHeader, parseHeader, verify } from '../dist/index.js'
+import {
+    AuthRequest,
+    createHeader,
+    parseHeader,
+    verify,
+    verifyParsed
+} from '../dist/index.js'
 
 // for localStorage test
 globalThis.Storage = LocalStorage
@@ -52,12 +58,13 @@ test('create instance', async t => {
     })
 })
 
+let parsedToken
 test('make another request', async t => {
     await req.get('https://example.com', {
         hooks: {
             afterResponse: [
                 (request:Request) => {
-                    const obj = parseHeader(
+                    const obj = parsedToken = parseHeader(
                         request.headers.get('Authorization') as string
                     )
                     t.equal(obj.seq, 2, 'should increment the sequence number')
@@ -92,4 +99,9 @@ test('create an instance with localStorage', async t => {
 
     const seq = localStorage.getItem('__seq')
     t.equal(seq, 4, 'should save the sequence number to localStorage')
+})
+
+test('verify a parsed token', async t => {
+    const isOk = verifyParsed(parsedToken)
+    t.ok(isOk, 'should verify a valid parsed token')
 })

@@ -3,7 +3,7 @@ import {
     SignedRequest,
     create as createMsg,
     verify as msgVerify
-} from '@ssc-hermes/message'
+} from '@ssc-half-light/message'
 import { KyInstance } from 'ky/distribution/types/ky'
 
 /**
@@ -71,4 +71,8 @@ export function parseHeader (header:string):SignedRequest<{ seq:number }> {
 export function verify (header:string):Promise<boolean> {
     const value = parseHeader(header)
     return msgVerify(value)
+}
+
+export function verifyParsed (obj:SignedRequest<{ seq:number }>):Promise<boolean> {
+    return msgVerify(obj)
 }

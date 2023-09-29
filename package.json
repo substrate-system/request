@@ -35,7 +35,7 @@
     }
   },
   "dependencies": {
-    "@ssc-hermes/message": "^0.4.7"
+    "@ssc-half-light/message": "^0.5.6"
   },
   "devDependencies": {
     "@oddjs/odd": "^0.37.2",

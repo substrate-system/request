@@ -19,7 +19,9 @@ We also depend the library [ky](https://github.com/sindresorhus/ky) for requests
 ## example
 
 ### create an instance
-In a web browser, pass an instance of [ky](https://github.com/sindresorhus/ky), and return an extended instance of `ky` that will automatically add a signature to the header as a `Bearer` token.
+In a web browser, pass an instance of [ky](https://github.com/sindresorhus/ky), and return an extended instance of `ky`, that will automatically add a signature to the header as a `Bearer` token.
+
+The header is a base64 encoded Bearer token. It looks like `Bearer eyJzZXEiOjE...`
 
 ```ts
 import { test } from '@socketsupply/tapzero'
@@ -27,7 +29,7 @@ import { AuthRequest, parseHeader, verify } from '@ssc-half-light/request'
 import ky from 'ky-universal'
 
 let header:string
-// header is like `Bearer ${base64string}`
+// header is a base64 encoded string: `Bearer ${base64string}`
 
 test('create instance', async t => {
     // `crypto` here is from `odd` -- `program.components.crypto`
@@ -50,7 +52,7 @@ test('create instance', async t => {
 })
 
 test('parse header', t => {
-    const obj = parseHeader(header)
+    const obj = parseHeader(header)  // first parse base64, then parse JSON
     // {
     //      seq: 1,
     //      author: 'did:key:...',
