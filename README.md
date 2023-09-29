@@ -107,3 +107,4 @@ test('create an instance with localStorage', async t => {
     t.equal(seq, 4, 'should save the sequence number to localStorage')
 })
 ```
+ 
