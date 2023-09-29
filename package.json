@@ -1,5 +1,5 @@
 {
-  "name": "@ssc-hermes/request",
+  "name": "@ssc-half-light/request",
   "version": "0.0.16",
   "description": "Use a `Bearer` token with web crypto to authenticate",
   "directories": {
