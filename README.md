@@ -17,13 +17,10 @@ This should be ergonomic to use with the existing [odd crypto library](https://g
 We also depend the library [ky](https://github.com/sindresorhus/ky) for requests, which you will need to install.
 
 ## API
+Exported functions:
 
 ### SignedRequest
 Patch a `key` instance so we make all requests with a signed header.
-
-```ts
-import { SignedRequest } from '@ssc-half-light/request'
-```
 
 ```ts
 import { KyInstance } from 'ky/distribution/types/ky'
@@ -33,6 +30,28 @@ function SignedRequest (
     crypto:Implementation,
     startingSeq:number|Storage
 ):KyInstance
+```
+
+### createHeader
+Create the base64 encoded header string
+
+```ts
+import { Implementation } from '@oddjs/odd/components/crypto/implementation'
+async function createHeader (crypto:Implementation, seq:number)
+```
+
+### verify
+Check that the signature matches the given public key.
+
+```ts
+function verify (header:string):Promise<boolean>
+```
+
+### verifyParsed
+Check the validity of a parsed token
+
+```ts
+function verifyParsed (obj:_SignedRequest<{ seq:number }>):Promise<boolean>
 ```
 
 ## example
@@ -69,7 +88,12 @@ test('create instance', async t => {
         }
     })
 })
+```
 
+### verify a token
+Check if a given signature matches the given public key. You would probably call this in server-side code. This only checks that the public key and signature are ok together. In real life you would need to check that the public key is something valid in your system as well as calling `verify` here.
+
+```ts
 test('parse header', t => {
     const obj = parseHeader(header)  // first parse base64, then parse JSON
     // {
@@ -87,7 +111,7 @@ test('verify the header', async t => {
 ```
 
 ### use localStorage for the sequence number
-Pass in an instance of `localStorage`, and we will save the sequence number to `__seq`.
+Pass in an instance of `localStorage`, and we will save the sequence number to `__seq` on any request.
 
 ```ts
 import { test } from '@socketsupply/tapzero'
