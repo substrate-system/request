@@ -4,7 +4,7 @@ import { components } from '@ssc-hermes/node-components'
 import ky from 'ky-universal'
 import { LocalStorage } from 'node-localstorage'
 import {
-    AuthRequest,
+    SignedRequest,
     createHeader,
     parseHeader,
     verify,
@@ -41,7 +41,7 @@ test('parse header', t => {
 
 let req
 test('create instance', async t => {
-    req = AuthRequest(ky, crypto, 0)
+    req = SignedRequest(ky, crypto, 0)
 
     await req.get('https://example.com/', {
         hooks: {
@@ -81,7 +81,7 @@ test('verify the header', async t => {
 test('create an instance with localStorage', async t => {
     const localStorage = new LocalStorage('./test-storage')
     localStorage.setItem('__seq', 3)
-    const req = AuthRequest(ky, crypto, localStorage)
+    const req = SignedRequest(ky, crypto, localStorage)
 
     await req.get('https://example.com', {
         hooks: {

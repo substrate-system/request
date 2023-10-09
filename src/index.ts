@@ -1,6 +1,6 @@
 import { Implementation } from '@oddjs/odd/components/crypto/implementation'
 import {
-    SignedRequest,
+    SignedRequest as _SignedRequest,
     create as createMsg,
     verify as msgVerify
 } from '@ssc-half-light/message'
@@ -13,7 +13,7 @@ import { KyInstance } from 'ky/distribution/types/ky'
  * @param startingSeq The number to start from, or a localstorage instance
  * @returns {KyInstance}
  */
-export function AuthRequest (
+export function SignedRequest (
     ky:KyInstance,
     crypto:Implementation,
     startingSeq:number|Storage
@@ -63,7 +63,7 @@ export async function createHeader (crypto:Implementation, seq:number)
  * Take the header returned from `createHeader`
  * @returns A parsed JSON value (an object)
  */
-export function parseHeader (header:string):SignedRequest<{ seq:number }> {
+export function parseHeader (header:string):_SignedRequest<{ seq:number }> {
     const json = atob(header.split(' ')[1])
     return JSON.parse(json)
 }
@@ -73,6 +73,6 @@ export function verify (header:string):Promise<boolean> {
     return msgVerify(value)
 }
 
-export function verifyParsed (obj:SignedRequest<{ seq:number }>):Promise<boolean> {
+export function verifyParsed (obj:_SignedRequest<{ seq:number }>):Promise<boolean> {
     return msgVerify(obj)
 }
