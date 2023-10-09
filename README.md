@@ -20,7 +20,7 @@ We also depend the library [ky](https://github.com/sindresorhus/ky) for requests
 Exported functions:
 
 ### SignedRequest
-Patch a `key` instance so we make all requests with a signed header.
+Patch a `ky` instance so we make all requests with a signed header.
 
 ```ts
 import { KyInstance } from 'ky/distribution/types/ky'
@@ -32,12 +32,27 @@ function SignedRequest (
 ):KyInstance
 ```
 
+The request will have an `Authorization` header, base64 encoded:
+```js
+request.headers.get('Authorization')
+// => "Bearer eyJzZXEiOjEsIm..."
+```
+
 ### createHeader
 Create the base64 encoded header string
 
 ```ts
 import { Implementation } from '@oddjs/odd/components/crypto/implementation'
 async function createHeader (crypto:Implementation, seq:number)
+```
+
+This will return a header that looks like this:
+```js
+{
+    seq: 1,
+    author:  'did:key:z13...'
+    signature:  'YIXITjTX7K4...'
+}
 ```
 
 ### verify
