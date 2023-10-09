@@ -16,6 +16,25 @@ This should be ergonomic to use with the existing [odd crypto library](https://g
 
 We also depend the library [ky](https://github.com/sindresorhus/ky) for requests, which you will need to install.
 
+## API
+
+### SignedRequest
+Patch a `key` instance so we make all requests with a signed header.
+
+```ts
+import { SignedRequest } from '@ssc-half-light/request'
+```
+
+```ts
+import { KyInstance } from 'ky/distribution/types/ky'
+
+function SignedRequest (
+    ky:KyInstance,
+    crypto:Implementation,
+    startingSeq:number|Storage
+):KyInstance
+```
+
 ## example
 
 ### create an instance

@@ -69,8 +69,12 @@ export function parseHeader (header:string):_SignedRequest<{ seq:number }> {
 }
 
 export function verify (header:string):Promise<boolean> {
-    const value = parseHeader(header)
-    return msgVerify(value)
+    try {
+        const value = parseHeader(header)
+        return msgVerify(value)
+    } catch (err) {
+        return Promise.resolve(false)
+    }
 }
 
 export function verifyParsed (obj:_SignedRequest<{ seq:number }>):Promise<boolean> {

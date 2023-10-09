@@ -29,6 +29,7 @@ let header:string
 test('create a header', async t => {
     header = await createHeader(crypto, 1)
     t.ok(header, 'should return a header')
+    t.ok(header.includes('Bearer '), 'should include the word "bearer"')
 })
 
 test('parse header', t => {
@@ -76,6 +77,11 @@ test('make another request', async t => {
 
 test('verify the header', async t => {
     t.equal(await verify(header), true, 'should validate a valid token')
+})
+
+test('verify an invalid token', async t => {
+    t.equal(await verify('Bearer balnoey'), false,
+        'should not validate an invalid token')
 })
 
 test('create an instance with localStorage', async t => {
