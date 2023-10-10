@@ -18,6 +18,7 @@ and set the latest sequence number in `localStorage`.
 __clientside__
 ```js
 import { SignedRequest } from '@ssc-half-light/request'
+import ky from 'ky'
 
 // ...get a `program` from `odd`
 const crypto = program.components.crypto
