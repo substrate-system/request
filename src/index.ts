@@ -1,6 +1,6 @@
 import { Implementation } from '@oddjs/odd/components/crypto/implementation'
 import {
-    SignedRequest as _SignedRequest,
+    SignedRequest as SignedMsg,
     create as createMsg,
     verify as msgVerify
 } from '@ssc-half-light/message'
@@ -63,7 +63,7 @@ export async function createHeader (crypto:Implementation, seq:number)
  * Take the header returned from `createHeader`
  * @returns A parsed JSON value (an object)
  */
-export function parseHeader (header:string):_SignedRequest<{ seq:number }> {
+export function parseHeader (header:string):SignedMsg<{ seq:number }> {
     const json = atob(header.split(' ')[1])
     return JSON.parse(json)
 }
@@ -77,6 +77,6 @@ export function verify (header:string):Promise<boolean> {
     }
 }
 
-export function verifyParsed (obj:_SignedRequest<{ seq:number }>):Promise<boolean> {
+export function verifyParsed (obj:SignedMsg<{ seq:number }>):Promise<boolean> {
     return msgVerify(obj)
 }

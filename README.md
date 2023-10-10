@@ -11,16 +11,53 @@ You can pass in either an integer or a localStorage instance. If you pass a loca
 npm i -S @ssc-half-light/request
 ```
 
+## example
+Create a new `ky` instance that will add a signed header to every request,
+and set the latest sequence number in `localStorage`.
+
+__clientside__
+```js
+import { SignedRequest } from '@ssc-half-light/request'
+
+// ...get a `program` from `odd`
+const crypto = program.components.crypto
+
+const request = SignedRequest(ky, crypto, winodw.localStorage)
+const response = await request.get('https://example.com')
+// request is sent with headers `{ Authorization: Bearer <credentials> }`
+```
+
+__Serverside__, you would want to check the signature, and that the sequence
+number is larger than the previous one.
+```js
+import {
+    verifyParsed,
+    parseHeader
+} from '@ssc-half-light/request'
+
+const headerString = request.headers.Authorization
+const parsedHeader = parseHeader(headerString)
+const { seq } = parsedHeader
+// ...get the previous sequence number somehow...
+const isOk = await verifyParsed()   // check signature
+const isSequenceOk = (seq > lastSequence)  // check sequence number
+```
+
+-------
+
+
 ## dependencies
 This should be ergonomic to use with the existing [odd crypto library](https://github.com/oddsdk/ts-odd).
 
-We also depend the library [ky](https://github.com/sindresorhus/ky) for requests, which you will need to install.
+We also depend the library [ky](https://github.com/sindresorhus/ky) for requests. 
+
+-------
 
 ## API
 Exported functions:
 
 ### SignedRequest
-Patch a `ky` instance so we make all requests with a signed header.
+Patch a `ky` instance so it makes all requests with a signed header.
 
 ```ts
 import { KyInstance } from 'ky/distribution/types/ky'
@@ -66,15 +103,19 @@ function verify (header:string):Promise<boolean>
 Check the validity of a parsed token
 
 ```ts
-function verifyParsed (obj:_SignedRequest<{ seq:number }>):Promise<boolean>
+import { SignedRequest as SignedMsg } from '@ssc-half-light/message'
+function verifyParsed (obj:SignedMsg<{ seq:number }>):Promise<boolean>
 ```
 
-## example
+## more examples
 
 ### create an instance
 In a web browser, pass an instance of [ky](https://github.com/sindresorhus/ky), and return an extended instance of `ky`, that will automatically add a signature to the header as a `Bearer` token.
 
-The header is a base64 encoded Bearer token. It looks like `Bearer eyJzZXEiOjE...`
+The header is a base64 encoded Bearer token. It looks like
+```
+Bearer eyJzZXEiOjE...
+```
 
 ```ts
 import { test } from '@socketsupply/tapzero'

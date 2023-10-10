@@ -108,6 +108,6 @@ test('create an instance with localStorage', async t => {
 })
 
 test('verify a parsed token', async t => {
-    const isOk = verifyParsed(parsedToken)
+    const isOk = await verifyParsed(parsedToken)
     t.ok(isOk, 'should verify a valid parsed token')
 })
