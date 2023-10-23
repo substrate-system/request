@@ -10,7 +10,7 @@ import {
     parseHeader,
     verify,
     encodeToken,
-    verifyParsed
+    verifyParsed,
 } from '../dist/index.js'
 
 // for localStorage test
@@ -42,7 +42,6 @@ test('verify the token', async t => {
 
 test('create a token with additional properties', async t => {
     const token = await createToken(crypto, 1, { example: 'testing' })
-    // @ts-ignore @TODO
     t.equal(token.example, 'testing', 'should have an additional property')
 })
 
