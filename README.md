@@ -119,7 +119,7 @@ Bearer eyJzZXEiOjE...
 ```
 
 ```ts
-import { test } from '@socketsupply/tapzero'
+import { test } from '@nichoth/tapzero'
 import { AuthRequest, parseHeader, verify } from '@ssc-half-light/request'
 import ky from 'ky-universal'
 
@@ -171,7 +171,7 @@ test('verify the header', async t => {
 Pass in an instance of `localStorage`, and we will save the sequence number to `__seq` on any request.
 
 ```ts
-import { test } from '@socketsupply/tapzero'
+import { test } from '@nichoth/tapzero'
 import { assemble } from '@oddjs/odd'
 import { components } from '@ssc-hermes/node-components'
 import ky from 'ky-universal'

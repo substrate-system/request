@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@oddjs/odd": "^0.37.2",
-    "@socketsupply/tapzero": "^0.7.1",
+    "@nichoth/tapzero": "^0.8.0",
     "@ssc-hermes/node-components": "^0.1.12",
     "@typescript-eslint/parser": "^5.55.0",
     "esbuild": "^0.15.18",

@@ -1,4 +1,4 @@
-import { test } from '@socketsupply/tapzero'
+import { test } from '@nichoth/tapzero'
 import { assemble } from '@oddjs/odd'
 import { components } from '@ssc-hermes/node-components'
 import ky from 'ky-universal'
