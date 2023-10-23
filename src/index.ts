@@ -54,9 +54,28 @@ export function SignedRequest (
 }
 
 export async function createHeader (crypto:Implementation, seq:number)
-:Promise<string> {
-    const newToken = btoa(JSON.stringify(await createMsg(crypto, { seq })))
-    return `Bearer ${newToken}`
+:Promise<`Bearer ${string}`> {
+    return encodeToken(await createToken(crypto, seq))
+}
+
+type Token<T> = SignedMsg<{
+    seq:number,
+} & {
+    [K in keyof T]: T[K]
+}>
+
+export function encodeToken<T> (token:Token<T>):`Bearer ${string}` {
+    const encoded = btoa(JSON.stringify(token))
+    return `Bearer ${encoded}`
+}
+
+export function createToken (
+    crypto:Implementation,
+    seq:number,
+    opts?:Record<string, any>
+):Promise<Token<typeof opts>> {
+    if (!opts) return createMsg(crypto, { seq })
+    return createMsg(crypto, { seq, ...opts })
 }
 
 /**

@@ -5,9 +5,11 @@ import ky from 'ky-universal'
 import { LocalStorage } from 'node-localstorage'
 import {
     SignedRequest,
+    createToken,
     createHeader,
     parseHeader,
     verify,
+    encodeToken,
     verifyParsed
 } from '../dist/index.js'
 
@@ -23,6 +25,30 @@ test('setup', async t => {
     crypto = program.components.crypto
 
     t.ok(program, 'create a program')
+})
+
+let token:Awaited<ReturnType<typeof createToken>>
+test('create a token', async t => {
+    token = await createToken(crypto, 1)
+
+    t.ok(token.author.includes('did:key:'), 'should have "author" field')
+    t.ok(token.signature, 'should have a signature')
+    t.equal(token.seq, 1, 'should have a sequence number')
+})
+
+test('verify the token', async t => {
+    t.ok(verifyParsed(token), 'should verify a valid token')
+})
+
+test('create a token with additional properties', async t => {
+    const token = await createToken(crypto, 1, { example: 'testing' })
+    // @ts-ignore @TODO
+    t.equal(token.example, 'testing', 'should have an additional property')
+})
+
+test('base64 encode the token', t => {
+    const encoded = encodeToken(token)
+    t.equal(typeof encoded, 'string', 'should return a base64 string')
 })
 
 let header:string

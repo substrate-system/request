@@ -84,19 +84,16 @@ import { Implementation } from '@oddjs/odd/components/crypto/implementation'
 async function createHeader (crypto:Implementation, seq:number)
 ```
 
-This will return a header that looks like this:
+This will create a header that looks like this:
 ```js
-{
-    seq: 1,
-    author:  'did:key:z13...'
-    signature:  'YIXITjTX7K4...'
-}
+`Bearer eyJzZXEiOj...`
 ```
 
 ### verify
 Check that the signature matches the given public key.
 
 ```ts
+// take a base64 encoded header string
 function verify (header:string):Promise<boolean>
 ```
 
@@ -105,8 +102,41 @@ Check the validity of a parsed token
 
 ```ts
 import { SignedRequest as SignedMsg } from '@ssc-half-light/message'
+// take a parsed object
 function verifyParsed (obj:SignedMsg<{ seq:number }>):Promise<boolean>
 ```
+
+### createToken
+Create a token object. This is the value that is encoded to make a header.
+
+```ts
+function createToken (
+    crypto:Implementation,
+    seq:number,
+    opts?:Record<string, any>
+):Promise<Token<typeof opts>>
+```
+
+#### example
+You can pass additional arguments to `createToken`, which will be added to the signed token object.
+
+```ts
+const token = await createToken(crypto, 1, { example: 'testing' })
+t.equal(token.example, 'testing', 'should have an additional property')
+```
+
+### encodeToken
+Encode a token object as a base64 string
+```ts
+function encodeToken<T> (token:Token<T>):`Bearer ${string}`
+```
+
+#### example
+```js
+const encoded = encodeToken(token)
+```
+
+-------
 
 ## more examples
 
@@ -176,7 +206,7 @@ import { assemble } from '@oddjs/odd'
 import { components } from '@ssc-hermes/node-components'
 import ky from 'ky-universal'
 import { LocalStorage } from 'node-localstorage'
-import { AuthRequest, parseHeader } from '@ssc-half-light/request'
+import { SignedRequest, parseHeader } from '@ssc-half-light/request'
 
 test('create an instance with localStorage', async t => {
     const program = await assemble({
@@ -187,7 +217,7 @@ test('create an instance with localStorage', async t => {
 
     const localStorage = new LocalStorage('./test-storage')
     localStorage.setItem('__seq', 3)
-    const req = AuthRequest(ky, crypto, localStorage)
+    const req = SignedRequest(ky, crypto, localStorage)
 
     await req.get('https://example.com', {
         hooks: {
