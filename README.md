@@ -97,6 +97,13 @@ Check that the signature matches the given public key.
 function verify (header:string):Promise<boolean>
 ```
 
+#### example
+```js
+import { verify } from '@ssc-half-light/request'
+
+const isOk = await verify(header)
+```
+
 ### verifyParsed
 Check the validity of a parsed token
 

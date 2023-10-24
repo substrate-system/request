@@ -53,6 +53,7 @@ test('base64 encode the token', t => {
 let header:string
 test('create a header', async t => {
     header = await createHeader(crypto, 1)
+    console.log('header...', header)
     t.ok(header, 'should return a header')
     t.ok(header.includes('Bearer '), 'should include the word "bearer"')
 })
