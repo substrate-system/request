@@ -1,6 +1,6 @@
 {
   "name": "@ssc-half-light/request",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Use a `Bearer` token with web crypto to authenticate",
   "directories": {
     "test": "test"
