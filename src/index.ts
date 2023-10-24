@@ -87,15 +87,24 @@ export function parseHeader (header:string):SignedMsg<{ seq:number }> {
     return JSON.parse(json)
 }
 
-export function verify (header:string):Promise<boolean> {
+export function verify (header:string, seq?:number):Promise<boolean> {
     try {
         const value = parseHeader(header)
+
+        if (seq && seq <= value.seq) {
+            return Promise.resolve(false)
+        }
+
         return msgVerify(value)
     } catch (err) {
         return Promise.resolve(false)
     }
 }
 
-export function verifyParsed (obj:SignedMsg<{ seq:number }>):Promise<boolean> {
+export function verifyParsed (
+    obj:SignedMsg<{ seq:number }>,
+    seq?:number
+):Promise<boolean> {
+    if (seq && seq <= obj.seq) return Promise.resolve(false)
     return msgVerify(obj)
 }

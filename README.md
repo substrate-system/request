@@ -11,11 +11,14 @@ You can pass in either an integer or a localStorage instance. If you pass a loca
 npm i -S @ssc-half-light/request
 ```
 
+## globals
+This reads and writes to `__seq` key in `localStorage`.
+
 ## example
 Create a new `ky` instance that will add a signed header to every request,
 and set the latest sequence number in `localStorage`.
 
-__clientside__
+### clientside
 ```js
 import { SignedRequest } from '@ssc-half-light/request'
 import ky from 'ky'
@@ -23,13 +26,15 @@ import ky from 'ky'
 // ...get a `program` from `odd`
 const crypto = program.components.crypto
 
+// we read and write to '__seq' key in `localStorage`
 const request = SignedRequest(ky, crypto, winodw.localStorage)
 const response = await request.get('https://example.com')
 // request is sent with headers `{ Authorization: Bearer <credentials> }`
 ```
 
-__Serverside__, you would want to check the signature, and that the sequence
-number is larger than the previous one.
+### serverside
+Parse the header string, and check the sequence number
+
 ```js
 import {
     verifyParsed,
@@ -40,8 +45,24 @@ const headerString = request.headers.Authorization
 const parsedHeader = parseHeader(headerString)
 const { seq } = parsedHeader
 // ...get the previous sequence number somehow...
-const isOk = await verifyParsed()   // check signature
+const isOk = await verifyParsed(parsedHeader)   // check signature
 const isSequenceOk = (seq > lastSequence)  // check sequence number
+```
+
+Or, pass in a sequence number to check that `header.seq` is greater than
+
+```js
+const headerString = request.headers.Authorization
+const parsedHeader = parseHeader(headerString)
+const isOk = await verifyParsed(parsedHeader, 3)  // <-- pass in a seq here
+```
+
+Pass in the non-parsed header string, and pass in a sequence number to check that `header.seq` is a greater value:
+
+```js
+// pass header string and latest sequence number
+await verify(headerString, 1)
+// => false
 ```
 
 -------

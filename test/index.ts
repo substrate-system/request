@@ -103,6 +103,8 @@ test('make another request', async t => {
 
 test('verify the header', async t => {
     t.equal(await verify(header), true, 'should validate a valid token')
+    t.equal(await verify(header, 1), false,
+        'should check the `seq` number if we pass it')
 })
 
 test('verify an invalid token', async t => {
