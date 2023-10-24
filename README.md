@@ -128,18 +128,22 @@ function createToken (
 You can pass additional arguments to `createToken`, which will be added to the signed token object.
 
 ```ts
+import { createToken } from '@ssc-half-light/request'
+
 const token = await createToken(crypto, 1, { example: 'testing' })
 t.equal(token.example, 'testing', 'should have an additional property')
 ```
 
 ### encodeToken
 Encode a token object as a base64 string
+
 ```ts
 function encodeToken<T> (token:Token<T>):`Bearer ${string}`
 ```
 
 #### example
 ```js
+import { encodeToken } from '@ssc-half-light/request'
 const encoded = encodeToken(token)
 ```
 
