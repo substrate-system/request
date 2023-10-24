@@ -16,7 +16,8 @@ import { KyInstance } from 'ky/distribution/types/ky'
 export function SignedRequest (
     ky:KyInstance,
     crypto:Implementation,
-    startingSeq:number|Storage
+    startingSeq:number|Storage,
+    opts?:Record<string, any>
 ):KyInstance {
     let seq:number = 0
 
@@ -46,16 +47,19 @@ export function SignedRequest (
                     }
 
                     req.headers.set('Authorization',
-                        await createHeader(crypto, seq))
+                        await createHeader(crypto, seq, opts))
                 }
             ]
         }
     })
 }
 
-export async function createHeader (crypto:Implementation, seq:number)
-:Promise<`Bearer ${string}`> {
-    return encodeToken(await createToken(crypto, seq))
+export async function createHeader (
+    crypto:Implementation,
+    seq:number,
+    opts?:Record<string, any>
+):Promise<`Bearer ${string}`> {
+    return encodeToken(await createToken(crypto, seq, opts))
 }
 
 type Token<T> = SignedMsg<{
@@ -82,7 +86,7 @@ export function createToken (
  * Take the header returned from `createHeader`
  * @returns A parsed JSON value (an object)
  */
-export function parseHeader (header:string):SignedMsg<{ seq:number }> {
+export function parseHeader<T> (header:string):Token<T> {
     const json = atob(header.split(' ')[1])
     return JSON.parse(json)
 }

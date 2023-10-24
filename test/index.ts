@@ -139,3 +139,25 @@ test('verify a parsed token', async t => {
     const isOk = await verifyParsed(parsedToken)
     t.ok(isOk, 'should verify a valid parsed token')
 })
+
+test('create an instance with additional params', async t => {
+    const opts = { username: 'alice' }
+    const req = SignedRequest(ky, crypto, 0, opts)
+
+    await req.get('https://example.com/', {
+        hooks: {
+            afterResponse: [
+                (request:Request) => {
+                    const obj = parseHeader<typeof opts>(
+                        request.headers.get('Authorization') as string
+                    )
+                    t.ok(obj, 'should have an Authorization header in request')
+                    t.equal(obj.seq, 1, 'should have the right sequence')
+                    t.equal(obj.username, 'alice',
+                        'should have additional properties')
+                    t.ok(verifyParsed(obj), 'should validate a valid token')
+                }
+            ]
+        }
+    })
+})
