@@ -62,7 +62,7 @@ export async function createHeader (
     return encodeToken(await createToken(crypto, seq, opts))
 }
 
-type Token<T> = SignedMsg<{
+export type Token<T> = SignedMsg<{
     seq:number,
 } & {
     [K in keyof T]: T[K]
