@@ -4,6 +4,7 @@ import { components } from '@ssc-hermes/node-components'
 import ky from 'ky-universal'
 import { LocalStorage } from 'node-localstorage'
 import {
+    HeaderFactory,
     SignedRequest,
     createToken,
     createHeader,
@@ -53,9 +54,21 @@ test('base64 encode the token', t => {
 let header:string
 test('create a header', async t => {
     header = await createHeader(crypto, 1)
-    console.log('header...', header)
     t.ok(header, 'should return a header')
     t.ok(header.includes('Bearer '), 'should include the word "bearer"')
+})
+
+test('header factory', async t => {
+    const localStorage = new LocalStorage('./test-storage')
+    localStorage.setItem('__seq', '0')
+    const createHeader = HeaderFactory(crypto, {}, localStorage)
+    const header = await createHeader()
+    const header2 = await createHeader()
+    t.ok(header.includes('Bearer'), 'should include "Bearer" text')
+    const token = parseHeader(header)
+    const token2 = parseHeader(header2)
+    t.equal(token.seq, 1, 'should start at 0 sequence')
+    t.equal(token2.seq, 2, 'should increment the sequence number')
 })
 
 test('parse header', t => {

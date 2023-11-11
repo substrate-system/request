@@ -54,10 +54,35 @@ export function SignedRequest (
     })
 }
 
+export function HeaderFactory (
+    crypto:Implementation,
+    opts?:Record<string, any>,
+    ls?:Storage
+):()=>Promise<`Bearer ${string}`> {
+    return function getHeader ():Promise<`Bearer ${string}`> {
+        let seq = 0
+        const storage = ls ?? window.localStorage
+        const n = storage.getItem('__seq')
+
+        if (n) {
+            try {
+                seq = parseInt(n)
+            } catch (err) {
+                seq = 0
+            }
+        }
+
+        seq++
+        storage.setItem('__seq', String(seq))
+        const header = createHeader(crypto, seq, opts)
+        return header
+    }
+}
+
 export async function createHeader (
     crypto:Implementation,
     seq:number,
-    opts?:Record<string, any>
+    opts?:Record<string, any>,
 ):Promise<`Bearer ${string}`> {
     return encodeToken(await createToken(crypto, seq, opts))
 }
