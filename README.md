@@ -83,7 +83,9 @@ We also depend the library [ky](https://github.com/sindresorhus/ky) for requests
 ## API
 Exported functions:
 
+----------------------------------
 ### SignedRequest
+----------------------------------
 Patch a `ky` instance so it makes all requests with a signed header.
 
 ```ts
@@ -102,7 +104,42 @@ request.headers.get('Authorization')
 // => "Bearer eyJzZXEiOjEsIm..."
 ```
 
+-----------------------------------------------------------
+### HeaderFactory
+-----------------------------------------------------------
+Create a function that will create header tokens and read and write the sequence number from `localStorage`.
+
+```ts
+function HeaderFactory (
+    crypto:Implementation,
+    opts?:Record<string, any>,
+    ls?:Storage
+):()=>Promise<`Bearer ${string}`>
+```
+
+#### example
+```ts
+import { program as createProgram } from '@oddjs/odd'
+import { HeaderFactory } from '@ssc-half-light/request'
+
+const program = await createProgram(
+    namespace: { creator: 'test', name: 'testing' },
+})
+const { crypto } = program.components
+
+const createHeader = HeaderFactory(crypto)
+const header = createHeader()  // read & update the seq in localStorage
+
+/**
+ * Optionally can pass in a params object and
+ * a localStorage instance
+ */
+const createHeaderTwo = HeaderFactory(crypto, { test: 'param' }, localStorage)
+```
+
+----------------------------------
 ### createHeader
+----------------------------------
 Create the base64 encoded header string
 
 ```ts
@@ -115,7 +152,9 @@ This will create a header that looks like this:
 `Bearer eyJzZXEiOj...`
 ```
 
+----------------------------------
 ### verify
+----------------------------------
 Check that the signature matches the given public key.
 
 ```ts
@@ -130,16 +169,31 @@ import { verify } from '@ssc-half-light/request'
 const isOk = await verify(header)
 ```
 
+----------------------------------
 ### verifyParsed
-Check the validity of a parsed token
+----------------------------------
+Check the validity of a parsed token. Optionally takes a sequence number. If a `seq` number is not passed in, then this will only verify the signature.
 
 ```ts
 import { SignedRequest as SignedMsg } from '@ssc-half-light/message'
-// take a parsed object
-function verifyParsed (obj:SignedMsg<{ seq:number }>):Promise<boolean>
+// take a parsed token
+function verifyParsed (
+    msg:SignedMsg<{ seq:number }>,
+    seq?:number
+):Promise<boolean>
 ```
 
+#### example
+```ts
+import { verifyParsed, create as createToken } from '@ssc-half-light/request'
+
+const token = await createToken(crypto, 1)
+const isOk = await verifyParsed(parsedToken)
+```
+
+----------------------------------
 ### createToken
+----------------------------------
 Create a token object. This is the value that is encoded to make a header.
 
 ```ts
@@ -160,7 +214,9 @@ const token = await createToken(crypto, 1, { example: 'testing' })
 t.equal(token.example, 'testing', 'should have an additional property')
 ```
 
+----------------------------------
 ### encodeToken
+----------------------------------
 Encode a token object as a base64 string
 
 ```ts
