@@ -104,6 +104,33 @@ request.headers.get('Authorization')
 // => "Bearer eyJzZXEiOjEsIm..."
 ```
 
+#### example
+```js
+import ky from 'ky-universal'
+import { program as createProgram } from '@oddjs/odd'
+import { SignedRequest, } from '@ssc-half-light/request'
+
+const program = await createProgram({
+    namespace: { creator: 'identity', name: 'example' }
+})
+const { crypto } = program.components
+
+// `req` is an instance of `ky`
+const req = SignedRequest(ky, crypto, 0)
+
+// make a request
+await req.get('https://example.com/')
+
+// ... later, on the server ...
+const headerObject = parseHeader(request.headers.get('Authorization'))
+
+// => {
+//     seq: 1,
+//     author: 'did:key:z13V3Sog2YaUKh...
+//     signature: 'VyaxQayQdXU7qhcOfcsCq...
+// }
+```
+
 -----------------------------------------------------------
 ### HeaderFactory
 -----------------------------------------------------------
@@ -137,9 +164,9 @@ const header = createHeader()  // read & update the seq in localStorage
 const createHeaderTwo = HeaderFactory(crypto, { test: 'param' }, localStorage)
 ```
 
-----------------------------------
+-----------------------------------------------------------
 ### createHeader
-----------------------------------
+-----------------------------------------------------------
 Create the base64 encoded header string
 
 ```ts
@@ -152,14 +179,14 @@ This will create a header that looks like this:
 `Bearer eyJzZXEiOj...`
 ```
 
-----------------------------------
+-----------------------------------------------------------
 ### verify
-----------------------------------
-Check that the signature matches the given public key.
+-----------------------------------------------------------
+Check that the signature matches the given public key. Optionally takes a sequence number, and will return false if the header's sequence is not greater than the given sequence.
 
 ```ts
 // take a base64 encoded header string
-function verify (header:string):Promise<boolean>
+function verify (header:string, seq?:number):Promise<boolean>
 ```
 
 #### example
@@ -169,9 +196,9 @@ import { verify } from '@ssc-half-light/request'
 const isOk = await verify(header)
 ```
 
-----------------------------------
+-----------------------------------------------------------
 ### verifyParsed
-----------------------------------
+-----------------------------------------------------------
 Check the validity of a parsed token. Optionally takes a sequence number. If a `seq` number is not passed in, then this will only verify the signature.
 
 ```ts
@@ -191,9 +218,9 @@ const token = await createToken(crypto, 1)
 const isOk = await verifyParsed(parsedToken)
 ```
 
-----------------------------------
+-----------------------------------------------------------
 ### createToken
-----------------------------------
+-----------------------------------------------------------
 Create a token object. This is the value that is encoded to make a header.
 
 ```ts
@@ -214,9 +241,9 @@ const token = await createToken(crypto, 1, { example: 'testing' })
 t.equal(token.example, 'testing', 'should have an additional property')
 ```
 
-----------------------------------
+-----------------------------------------------------------
 ### encodeToken
-----------------------------------
+-----------------------------------------------------------
 Encode a token object as a base64 string
 
 ```ts

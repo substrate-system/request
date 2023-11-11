@@ -90,6 +90,7 @@ test('create instance', async t => {
                     const obj = parseHeader(
                         request.headers.get('Authorization') as string
                     )
+                    console.log('**header obj**', obj)
                     t.ok(obj, 'should have an Authorization header in request')
                     t.equal(obj.seq, 1, 'should have the right sequence')
                 }
