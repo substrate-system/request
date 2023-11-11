@@ -62,14 +62,6 @@ const parsedHeader = parseHeader(headerString)
 const isOk = await verifyParsed(parsedHeader, 3)  // <-- pass in a seq here
 ```
 
-Pass in the non-parsed header string, and pass in a sequence number to check that `header.seq` is a greater value:
-
-```js
-// pass header string and latest sequence number
-await verify(headerString, 1)
-// => false
-```
-
 -------
 
 
