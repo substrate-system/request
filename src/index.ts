@@ -5,6 +5,8 @@ import {
     verify as msgVerify
 } from '@ssc-half-light/message'
 import { KyInstance } from 'ky/distribution/types/ky'
+import { parseHeader } from './parse.js'
+export { parseHeader } from './parse.js'
 
 /**
  * Create a `ky` that will add a signed Bearer token to each request.
@@ -105,15 +107,6 @@ export function createToken (
 ):Promise<Token<typeof opts>> {
     if (!opts) return createMsg(crypto, { seq })
     return createMsg(crypto, { seq, ...opts })
-}
-
-/**
- * Take the header returned from `createHeader`
- * @returns A parsed JSON value (an object)
- */
-export function parseHeader<T> (header:string):Token<T> {
-    const json = atob(header.split(' ')[1])
-    return JSON.parse(json)
 }
 
 export function verify (header:string, seq?:number):Promise<boolean> {
