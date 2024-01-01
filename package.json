@@ -42,7 +42,7 @@
     "@nichoth/tapzero": "^0.8.4",
     "@oddjs/odd": "^0.37.2",
     "@ssc-hermes/node-components": "^0.1.12",
-    "@typescript-eslint/parser": "^5.55.0",
+    "@typescript-eslint/parser": "^6.17.0",
     "auto-changelog": "^2.4.0",
     "esbuild": "^0.19.11",
     "ky": "^1.1.3",
