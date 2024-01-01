@@ -25,6 +25,7 @@ and set the latest sequence number in `localStorage`.
 
 ### clientside
 ```js
+import { crypto } from '@oddjs/odd'
 import { SignedRequest } from '@ssc-half-light/request'
 import ky from 'ky'
 
@@ -33,6 +34,7 @@ const crypto = program.components.crypto
 
 // we read and write to '__seq' key in `localStorage`
 const request = SignedRequest(ky, crypto, winodw.localStorage)
+// `request` is an extended version of `ky`
 const response = await request.get('https://example.com')
 // request is sent with headers `{ Authorization: Bearer <credentials> }`
 ```

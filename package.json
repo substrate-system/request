@@ -13,9 +13,9 @@
     "test": "npm run build && npm run build-tests && NODE_ENV=test node ./test/index.js | tap-arc",
     "build-cjs": "esbuild src/*.ts --format=cjs --keep-names --outdir=./dist --out-extension:.js=.cjs",
     "build": "mkdir -p ./dist && rm -rf ./dist/* && npm run build-cjs && tsc --project tsconfig.build.json",
-    "preinstall": "export $(cat .env | xargs)",
-    "install": "export $(cat .env | xargs)",
+    "preinstall": "export $(cat .env | grep -v \"#\" | xargs)",
     "preversion": "npm run lint",
+    "version": "auto-changelog -p --template keepachangelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
     "postversion": "git push && git push --tags && export $(cat .env | xargs) && npm publish && npm publish --@ssc-half-light:registry=https://registry.npmjs.org --access=public",
     "prepublishOnly": "npm run build"
   },
@@ -36,20 +36,21 @@
     }
   },
   "dependencies": {
-    "@ssc-half-light/message": "^0.5.11"
+    "@ssc-half-light/message": "^0.5.20"
   },
   "devDependencies": {
+    "@nichoth/tapzero": "^0.8.4",
     "@oddjs/odd": "^0.37.2",
-    "@nichoth/tapzero": "^0.8.0",
     "@ssc-hermes/node-components": "^0.1.12",
     "@typescript-eslint/parser": "^5.55.0",
-    "esbuild": "^0.15.18",
-    "ky": "^0.33.3",
-    "ky-universal": "^0.11.0",
-    "node-localstorage": "^2.2.1",
+    "auto-changelog": "^2.4.0",
+    "esbuild": "^0.19.11",
+    "ky": "^1.1.3",
+    "ky-universal": "^0.12.0",
+    "node-localstorage": "^3.0.5",
     "standardx": "^7.0.0",
-    "tap-arc": "^0.3.5",
-    "typescript": "^5.0.2"
+    "tap-arc": "^1.2.2",
+    "typescript": "^5.3.3"
   },
   "author": "nichoth <nichoth@gmail.com> (https://nichoth.com)",
   "license": "MIT",
