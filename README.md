@@ -1,9 +1,9 @@
 # request
 ![tests](https://github.com/ssc-half-light/request/actions/workflows/nodejs.yml/badge.svg)
 [![Socket Badge](https://socket.dev/api/badge/npm/package/@ssc-half-light/request)](https://socket.dev/npm/package/@ssc-half-light/request)
-[![module](https://img.shields.io/badge/module-ESM%2FCJS-blue)](README.md)
-![types](https://img.shields.io/npm/types/@ssc-half-light/request)
-![license](https://img.shields.io/badge/license-MIT-brightgreen)
+[![module](https://img.shields.io/badge/module-ESM%2FCJS-blue?style=flat-square)](README.md)
+![types](https://img.shields.io/npm/types/@ssc-half-light/request?style=flat-square)
+![license](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square)
 
 Use a `Bearer` token in an HTTP request to verify identity. This will sign an integer with the given [odd instance](https://github.com/oddsdk/ts-odd/blob/main/src/components/crypto/implementation.ts#L14), suitable for an access-control type of auth.
 
