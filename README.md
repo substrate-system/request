@@ -25,11 +25,12 @@ and set the latest sequence number in `localStorage`.
 
 ### clientside
 ```js
-import { crypto } from '@oddjs/odd'
+import { program as createProgram } from '@oddjs/odd'
 import { SignedRequest } from '@ssc-half-light/request'
 import ky from 'ky'
 
 // ...get a `program` from `odd`
+
 const crypto = program.components.crypto
 
 // we read and write to '__seq' key in `localStorage`
