@@ -1,9 +1,9 @@
 import { Implementation } from '@oddjs/odd/components/crypto/implementation'
 import {
-    SignedRequest as SignedMsg,
+    SignedMessage as SignedMsg,
     create as createMsg,
     verify as msgVerify
-} from '@ssc-half-light/message'
+} from '@bicycle-codes/message'
 import { KyInstance } from 'ky/distribution/types/ky'
 import { parseHeader } from './parse.js'
 export { parseHeader } from './parse.js'

@@ -12,7 +12,7 @@ import {
     verify,
     encodeToken,
     verifyParsed,
-} from '../dist/index.js'
+} from '@bicycle-codes/request'
 
 // for localStorage test
 globalThis.Storage = LocalStorage
