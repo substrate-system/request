@@ -7,6 +7,9 @@
   },
   "type": "module",
   "main": "dist/index.js",
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "lint": "eslint \"./**/*.{ts,js}\"",
     "build-tests": "esbuild test/*.ts --platform=node --format=esm --outdir=test --keep-names",
