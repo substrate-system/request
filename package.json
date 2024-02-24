@@ -1,5 +1,5 @@
 {
-  "name": "@ssc-half-light/request",
+  "name": "@bicycle-codes/request",
   "version": "0.5.5",
   "description": "Use a `Bearer` token with web crypto to authenticate",
   "directories": {
@@ -16,7 +16,7 @@
     "preinstall": "export $(cat .env | grep -v \"#\" | xargs)",
     "preversion": "npm run lint",
     "version": "auto-changelog -p --template keepachangelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
-    "postversion": "git push && git push --tags && export $(cat .env | xargs) && npm publish && npm publish --@ssc-half-light:registry=https://registry.npmjs.org --access=public",
+    "postversion": "git push --follow-tags && npm publish",
     "prepublishOnly": "npm run build"
   },
   "exports": {
@@ -36,7 +36,7 @@
     }
   },
   "dependencies": {
-    "@ssc-half-light/message": "^0.5.20"
+    "@bicycle-codes/message": "^0.7.0"
   },
   "devDependencies": {
     "@nichoth/tapzero": "^0.8.4",
@@ -57,7 +57,7 @@
   "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ssc-half-light/request"
+    "url": "https://github.com/bicycle-codes/request"
   },
   "keywords": [
     "request",
