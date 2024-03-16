@@ -3,12 +3,12 @@ import { assemble } from '@oddjs/odd'
 import { components } from '@ssc-hermes/node-components'
 import ky from 'ky-universal'
 import { LocalStorage } from 'node-localstorage'
+import { parseHeader } from '../dist/parse.js'
 import {
     HeaderFactory,
     SignedRequest,
     createToken,
     createHeader,
-    parseHeader,
     verify,
     encodeToken,
     verifyParsed,
