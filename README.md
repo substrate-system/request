@@ -13,7 +13,7 @@ You can pass in either an integer or a localStorage instance. If you pass a loca
 
 ## install
 ```
-npm i -S @ssc-bicycle-codes/request
+npm i -S @bicycle-codes/request
 ```
 
 ## globals
@@ -26,7 +26,7 @@ and set the latest sequence number in `localStorage`.
 ### clientside
 ```js
 import { program as createProgram } from '@oddjs/odd'
-import { SignedRequest } from '@ssc-bicycle-codes/request'
+import { SignedRequest } from '@bicycle-codes/request'
 import ky from 'ky'
 
 // ...get a `program` from `odd`
@@ -47,7 +47,7 @@ Parse the header string, and check the sequence number
 import {
     verifyParsed,
     parseHeader
-} from '@ssc-bicycle-codes/request'
+} from '@bicycle-codes/request'
 
 const headerString = request.headers.Authorization
 const parsedHeader = parseHeader(headerString)
@@ -103,7 +103,7 @@ request.headers.get('Authorization')
 ```js
 import ky from 'ky-universal'
 import { program as createProgram } from '@oddjs/odd'
-import { SignedRequest, } from '@ssc-bicycle-codes/request'
+import { SignedRequest, } from '@bicycle-codes/request'
 
 const program = await createProgram({
     namespace: { creator: 'identity', name: 'example' }
@@ -142,7 +142,7 @@ function HeaderFactory (
 #### example
 ```ts
 import { program as createProgram } from '@oddjs/odd'
-import { HeaderFactory } from '@ssc-bicycle-codes/request'
+import { HeaderFactory } from '@bicycle-codes/request'
 
 const program = await createProgram(
     namespace: { creator: 'test', name: 'testing' },
@@ -186,7 +186,7 @@ function verify (header:string, seq?:number):Promise<boolean>
 
 #### example
 ```js
-import { verify } from '@ssc-bicycle-codes/request'
+import { verify } from '@bicycle-codes/request'
 
 const isOk = await verify(header)
 ```
@@ -197,7 +197,7 @@ const isOk = await verify(header)
 Check the validity of a parsed token. Optionally takes a sequence number. If a `seq` number is not passed in, then this will only verify the signature.
 
 ```ts
-import { SignedRequest as SignedMsg } from '@ssc-bicycle-codes/message'
+import { SignedRequest as SignedMsg } from '@bicycle-codes/message'
 // take a parsed token
 function verifyParsed (
     msg:SignedMsg<{ seq:number }>,
@@ -207,7 +207,7 @@ function verifyParsed (
 
 #### example
 ```ts
-import { verifyParsed, create as createToken } from '@ssc-bicycle-codes/request'
+import { verifyParsed, create as createToken } from '@bicycle-codes/request'
 
 const token = await createToken(crypto, 1)
 const isOk = await verifyParsed(parsedToken)
@@ -230,7 +230,7 @@ function createToken (
 You can pass additional arguments to `createToken`, which will be added to the signed token object.
 
 ```ts
-import { createToken } from '@ssc-bicycle-codes/request'
+import { createToken } from '@bicycle-codes/request'
 
 const token = await createToken(crypto, 1, { example: 'testing' })
 t.equal(token.example, 'testing', 'should have an additional property')
@@ -247,7 +247,7 @@ function encodeToken<T> (token:Token<T>):`Bearer ${string}`
 
 #### example
 ```js
-import { encodeToken } from '@ssc-bicycle-codes/request'
+import { encodeToken } from '@bicycle-codes/request'
 const encoded = encodeToken(token)
 ```
 
@@ -265,7 +265,7 @@ Bearer eyJzZXEiOjE...
 
 ```ts
 import { test } from '@nichoth/tapzero'
-import { AuthRequest, parseHeader, verify } from '@ssc-bicycle-codes/request'
+import { AuthRequest, parseHeader, verify } from '@bicycle-codes/request'
 import ky from 'ky-universal'
 
 let header:string
@@ -321,7 +321,7 @@ import { assemble } from '@oddjs/odd'
 import { components } from '@ssc-hermes/node-components'
 import ky from 'ky-universal'
 import { LocalStorage } from 'node-localstorage'
-import { SignedRequest, parseHeader } from '@ssc-bicycle-codes/request'
+import { SignedRequest, parseHeader } from '@bicycle-codes/request'
 
 test('create an instance with localStorage', async t => {
     const program = await assemble({
