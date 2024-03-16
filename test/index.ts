@@ -3,8 +3,9 @@ import { assemble } from '@oddjs/odd'
 import { components } from '@ssc-hermes/node-components'
 import ky from 'ky-universal'
 import { LocalStorage } from 'node-localstorage'
-import { parseHeader } from '../dist/parse.js'
+import { parseHeader, parseToken } from '../dist/parse.js'
 import {
+    TokenFactory,
     HeaderFactory,
     SignedRequest,
     createToken,
@@ -69,6 +70,20 @@ test('header factory', async t => {
     const token2 = parseHeader(header2)
     t.equal(token.seq, 1, 'should start at 0 sequence')
     t.equal(token2.seq, 2, 'should increment the sequence number')
+})
+
+test('token factory', async t => {
+    const ls = new LocalStorage('./test-token')
+    ls.setItem('__seq', '0')
+    const createToken = TokenFactory(crypto, {}, ls)
+    const token = await createToken()
+    t.ok(!token.includes('Bearer'),
+        'should not include "Bearer" text in the token')
+    const parsedToken = parseToken(token)
+    console.log('**parsed token**', parsedToken)
+    t.equal(parsedToken.seq, 1, 'should include the first sequence number')
+    t.ok(parsedToken.author, 'should have "author" in the token')
+    t.ok(parsedToken.signature, 'should have "signature" in the token')
 })
 
 test('parse header', t => {

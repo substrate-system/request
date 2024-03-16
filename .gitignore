@@ -6,4 +6,5 @@ test/*.js
 dist
 .env
 test-storage
+test/test-token
 

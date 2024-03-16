@@ -80,6 +80,35 @@ export function HeaderFactory (
     }
 }
 
+/**
+ * Create tokens that are base64 encoded strings of a sequence number.
+ * This is different than the header because this does not include 'Bearer '.
+ */
+export function TokenFactory (
+    crypto:Implementation,
+    opts?:Record<string, any>,
+    ls?:Storage
+):()=>Promise<string> {
+    return async function getToken ():Promise<string> {
+        let seq = 0
+        const storage = ls ?? window.localStorage
+        const n = storage.getItem('__seq')
+        if (n) {
+            try {
+                seq = parseInt(n)
+            } catch (err) {
+                seq = 0
+            }
+        }
+
+        seq++
+        storage.setItem('__seq', String(seq))
+        const token = await createToken(crypto, seq, opts)
+        const encoded = btoa(JSON.stringify(token))
+        return encoded
+    }
+}
+
 export async function createHeader (
     crypto:Implementation,
     seq:number,
