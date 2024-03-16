@@ -150,7 +150,7 @@ const program = await createProgram(
 const { crypto } = program.components
 
 const createHeader = HeaderFactory(crypto)
-const header = createHeader()  // read & update the seq in localStorage
+const header = await createHeader()  // read & update `__seq` in localStorage
 
 /**
  * Optionally can pass in a params object and
