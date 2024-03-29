@@ -7,6 +7,8 @@ import {
 import { KyInstance } from 'ky/distribution/types/ky'
 import { parseHeader } from './parse.js'
 
+export { parseHeader }
+
 /**
  * Create a `ky` that will add a signed Bearer token to each request.
  * @param ky Ky library
