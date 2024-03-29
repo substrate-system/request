@@ -5,9 +5,9 @@ import {
     verify as msgVerify
 } from '@bicycle-codes/message'
 import { KyInstance } from 'ky/distribution/types/ky'
-import { parseHeader } from './parse.js'
+import { parseHeader, parseToken } from './parse.js'
 
-export { parseHeader }
+export { parseHeader, parseToken }
 
 /**
  * Create a `ky` that will add a signed Bearer token to each request.

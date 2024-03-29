@@ -312,6 +312,30 @@ test('verify the header', async t => {
 })
 ```
 
+### parse a token
+This is distinct from parsing a "header" because the token does not include the text "Bearer".
+
+```ts
+import { TokenFactory, parseToken, verifyParsed } from '@bicycle-codes/request'
+
+test('token factory', async t => {
+    // this is client-side
+    const createToken = TokenFactory(crypto)
+    const token = await createToken()
+    t.ok(!token.includes('Bearer'),
+        'should not include "Bearer" text in the token')
+
+    // this is server-side
+    const parsedToken = parseToken(token)
+    t.equal(parsedToken.seq, 1, 'should include the first sequence number')
+    t.ok(parsedToken.author, 'should have "author" in the token')
+    t.ok(parsedToken.signature, 'should have "signature" in the token')
+
+    t.ok(verifyParsed(parsedToken), 'should verify a valid token')
+    // also, check that the `parsedToken.seq` has increased
+})
+```
+
 ### use localStorage for the sequence number
 Pass in an instance of `localStorage`, and we will save the sequence number to `__seq` on any request.
 
