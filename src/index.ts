@@ -57,6 +57,8 @@ export function SignedRequest (
     })
 }
 
+export type ParsedHeader = SignedMsg<{ seq:number }>
+
 export function HeaderFactory (
     crypto:Implementation,
     opts?:Record<string, any>,
@@ -154,7 +156,7 @@ export function verify (header:string, seq?:number):Promise<boolean> {
 }
 
 export function verifyParsed (
-    obj:SignedMsg<{ seq:number }>,
+    obj:ParsedHeader,
     seq?:number
 ):Promise<boolean> {
     if (seq && seq <= obj.seq) return Promise.resolve(false)

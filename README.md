@@ -43,14 +43,15 @@ const response = await request.get('https://example.com')
 ### serverside
 Parse the header string, and check the sequence number
 
-```js
+```ts
 import {
     verifyParsed,
     parseHeader
 } from '@bicycle-codes/request'
+import type { ParsedHeader } from '@bicycle-codes/request'
 
 const headerString = request.headers.Authorization
-const parsedHeader = parseHeader(headerString)
+const parsedHeader:ParsedHeader = parseHeader(headerString)
 const { seq } = parsedHeader
 // ...get the previous sequence number somehow...
 const isOk = await verifyParsed(parsedHeader)   // check signature
