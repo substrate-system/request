@@ -1,7 +1,7 @@
-import { test } from '@nichoth/tapzero'
+import { test } from '@bicycle-codes/tapzero'
 import { assemble } from '@oddjs/odd'
 import { components } from '@ssc-hermes/node-components'
-import ky from 'ky-universal'
+import ky from 'ky'
 import { LocalStorage } from 'node-localstorage'
 import { parseHeader, parseToken } from '../dist/parse.js'
 import {
