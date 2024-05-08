@@ -3,6 +3,7 @@
 [![Socket Badge](https://socket.dev/api/badge/npm/package/@bicycle-codes/request)](https://socket.dev/npm/package/@bicycle-codes/request)
 [![module](https://img.shields.io/badge/module-ESM%2FCJS-blue?style=flat-square)](README.md)
 ![types](https://img.shields.io/npm/types/@bicycle-codes/request?style=flat-square)
+[![semantic versioning](https://img.shields.io/badge/semver-2.0.0-blue?logo=semver&style=flat-square)](https://semver.org/)
 ![license](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square)
 
 Use a `Bearer` token in an HTTP request to verify identity. This will sign an integer with the given [odd instance](https://github.com/oddsdk/ts-odd/blob/main/src/components/crypto/implementation.ts#L14), suitable for an access-control type of auth.
