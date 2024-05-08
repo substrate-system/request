@@ -48,7 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "@typescript-eslint/parser": "^7.0.2",
     "auto-changelog": "^2.4.0",
-    "esbuild": "^0.20.0",
+    "esbuild": "^0.21.1",
     "eslint": "^8.56.0",
     "eslint-config-standard": "^17.1.0",
     "ky": "^1.1.3",
