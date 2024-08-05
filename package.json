@@ -45,7 +45,7 @@
     "@oddjs/odd": "^0.37.2",
     "@ssc-hermes/node-components": "^0.1.12",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^7.0.2",
+    "@typescript-eslint/parser": "^8.0.0",
     "auto-changelog": "^2.4.0",
     "esbuild": "^0.23.0",
     "eslint": "^8.56.0",
