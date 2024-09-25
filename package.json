@@ -57,7 +57,6 @@
     "typescript": "^5.6.2"
   },
   "author": "nichoth <nichoth@gmail.com> (https://nichoth.com)",
-  "license": "MIT",
   "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
@@ -72,5 +71,6 @@
   "bugs": {
     "url": "https://github.com/ssc-hermes/request/issues"
   },
-  "homepage": "https://github.com/ssc-hermes/request#readme"
+  "homepage": "https://github.com/ssc-hermes/request",
+  "license": "MIT"
 }
