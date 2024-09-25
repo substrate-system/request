@@ -17,6 +17,28 @@ You can pass in either an integer or a localStorage instance. If you pass a loca
 
 <!-- toc -->
 
+- [install](#install)
+- [globals](#globals)
+- [example](#example)
+  * [clientside](#clientside)
+  * [serverside](#serverside)
+- [dependencies](#dependencies)
+- [API](#api)
+  * [SignedRequest](#signedrequest)
+  * [HeaderFactory](#headerfactory)
+  * [createHeader](#createheader)
+  * [verify](#verify)
+  * [verifyParsed](#verifyparsed)
+  * [createToken](#createtoken)
+  * [encodeToken](#encodetoken)
+- [more examples](#more-examples)
+  * [create an instance](#create-an-instance)
+  * [verify a token](#verify-a-token)
+  * [parse a token](#parse-a-token)
+  * [use localStorage for the sequence number](#use-localstorage-for-the-sequence-number)
+
+<!-- tocstop -->
+
 ## install
 ```
 npm i -S @bicycle-codes/request
