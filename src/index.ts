@@ -3,7 +3,7 @@ import {
     create as createMsg,
     verify as msgVerify
 } from '@bicycle-codes/message'
-import type { KyInstance } from 'ky/distribution/types/ky'
+import type { KyInstance } from 'ky'
 import { parseHeader, parseToken } from './parse.js'
 
 export { parseHeader, parseToken }
