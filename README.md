@@ -4,6 +4,7 @@
 [![module](https://img.shields.io/badge/module-ESM%2FCJS-blue?style=flat-square)](README.md)
 ![types](https://img.shields.io/npm/types/@bicycle-codes/request?style=flat-square)
 [![semantic versioning](https://img.shields.io/badge/semver-2.0.0-blue?logo=semver&style=flat-square)](https://semver.org/)
+[![install size](https://flat.badgen.net/packagephobia/install/@bicycle-codes/request)](https://packagephobia.com/result?p=@bicycle-codes/request)
 ![license](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square)
 
 Use a `Bearer` token in an HTTP request to verify identity. This will sign an integer with the given [odd instance](https://github.com/oddsdk/ts-odd/blob/main/src/components/crypto/implementation.ts#L14), suitable for an access-control type of auth.
@@ -11,6 +12,10 @@ Use a `Bearer` token in an HTTP request to verify identity. This will sign an in
 The sequence number is an always incrementing integer. It is expected that a server would remember the previous sequence number for this DID (public key), and check that the given sequence is larger than the previous sequence. Also it would check that the signature is valid.
 
 You can pass in either an integer or a localStorage instance. If you pass a localStorage instance, it will read the index `'__seq'`, which should be a number. If there is not a number stored there, we will start at `0`.
+
+## contents
+
+<!-- toc -->
 
 ## install
 ```
@@ -378,4 +383,3 @@ test('create an instance with localStorage', async t => {
     t.equal(seq, 4, 'should save the sequence number to localStorage')
 })
 ```
- 
