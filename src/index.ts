@@ -1,10 +1,10 @@
-import { Implementation } from '@oddjs/odd/components/crypto/implementation'
+import type { Implementation } from '@oddjs/odd/components/crypto/implementation'
 import {
-    SignedMessage as SignedMsg,
+    type SignedMessage as SignedMsg,
     create as createMsg,
     verify as msgVerify
 } from '@bicycle-codes/message'
-import { KyInstance } from 'ky/distribution/types/ky'
+import type { KyInstance } from 'ky/distribution/types/ky'
 import { parseHeader, parseToken } from './parse.js'
 
 export { parseHeader, parseToken }
@@ -29,7 +29,7 @@ export function SignedRequest (
         if (n) {
             try {
                 seq = parseInt(n)
-            } catch (err) {
+            } catch (_err) {
                 seq = 0
             }
         }
@@ -72,7 +72,7 @@ export function HeaderFactory (
         if (n) {
             try {
                 seq = parseInt(n)
-            } catch (err) {
+            } catch (_err) {
                 seq = 0
             }
         }
@@ -100,7 +100,7 @@ export function TokenFactory (
         if (n) {
             try {
                 seq = parseInt(n)
-            } catch (err) {
+            } catch (_err) {
                 seq = 0
             }
         }
@@ -150,7 +150,7 @@ export function verify (header:string, seq?:number):Promise<boolean> {
         }
 
         return msgVerify(value)
-    } catch (err) {
+    } catch (_err) {
         return Promise.resolve(false)
     }
 }
