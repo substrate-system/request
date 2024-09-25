@@ -13,7 +13,7 @@ The sequence number is an always incrementing integer. It is expected that a ser
 
 You can pass in either an integer or a localStorage instance. If you pass a localStorage instance, it will read the index `'__seq'`, which should be a number. If there is not a number stored there, we will start at `0`.
 
-## contents
+## Contents
 
 <!-- toc -->
 

@@ -1,9 +1,7 @@
 import { test } from '@bicycle-codes/tapzero'
-import { assemble } from '@oddjs/odd'
-import { components } from '@ssc-hermes/node-components'
 import ky from 'ky'
+import { create as createKeys } from '@bicycle-codes/crypto-util/webcrypto/rsa'
 import { LocalStorage } from 'node-localstorage'
-import { parseHeader, parseToken } from '../dist/parse.js'
 import {
     TokenFactory,
     HeaderFactory,
@@ -14,24 +12,22 @@ import {
     encodeToken,
     verifyParsed,
 } from '@bicycle-codes/request'
+import { KeyUse } from '@bicycle-codes/crypto-util/types'
+import { parseHeader, parseToken } from '../dist/parse.js'
 
 // for localStorage test
 globalThis.Storage = LocalStorage
 
-let crypto
+let keypair:CryptoKeyPair
 test('setup', async t => {
-    const program = await assemble({
-        namespace: { creator: 'test', name: 'testing' },
-        debug: false
-    }, components)
-    crypto = program.components.crypto
+    keypair = await createKeys(KeyUse.Sign)
 
-    t.ok(program, 'create a program')
+    t.ok(keypair, 'create a keypair')
 })
 
 let token:Awaited<ReturnType<typeof createToken>>
 test('create a token', async t => {
-    token = await createToken(crypto, 1)
+    token = await createToken(keypair, 1)
 
     t.ok(token.author.includes('did:key:'), 'should have "author" field')
     t.ok(token.signature, 'should have a signature')
@@ -43,7 +39,7 @@ test('verify the token', async t => {
 })
 
 test('create a token with additional properties', async t => {
-    const token = await createToken(crypto, 1, { example: 'testing' })
+    const token = await createToken(keypair, 1, { example: 'testing' })
     t.equal(token.example, 'testing', 'should have an additional property')
 })
 
@@ -54,7 +50,7 @@ test('base64 encode the token', t => {
 
 let header:string
 test('create a header', async t => {
-    header = await createHeader(crypto, 1)
+    header = await createHeader(keypair, 1)
     t.ok(header, 'should return a header')
     t.ok(header.includes('Bearer '), 'should include the word "bearer"')
 })
@@ -62,7 +58,7 @@ test('create a header', async t => {
 test('header factory', async t => {
     const localStorage = new LocalStorage('./test-storage')
     localStorage.setItem('__seq', '0')
-    const createHeader = HeaderFactory(crypto, {}, localStorage)
+    const createHeader = HeaderFactory(keypair, {}, localStorage)
     const header = await createHeader()
     const header2 = await createHeader()
     t.ok(header.includes('Bearer'), 'should include "Bearer" text')
@@ -75,7 +71,7 @@ test('header factory', async t => {
 test('token factory', async t => {
     const ls = new LocalStorage('./test-token')
     ls.setItem('__seq', '0')
-    const createToken = TokenFactory(crypto, {}, ls)
+    const createToken = TokenFactory(keypair, {}, ls)
     const token = await createToken()
     t.ok(!token.includes('Bearer'),
         'should not include "Bearer" text in the token')
@@ -96,7 +92,7 @@ test('parse header', t => {
 
 let req
 test('create instance', async t => {
-    req = SignedRequest(ky, crypto, 0)
+    req = SignedRequest(ky, keypair, 0)
 
     await req.get('https://example.com/', {
         hooks: {
@@ -144,7 +140,7 @@ test('verify an invalid token', async t => {
 test('create an instance with localStorage', async t => {
     const localStorage = new LocalStorage('./test-storage')
     localStorage.setItem('__seq', 3)
-    const req = SignedRequest(ky, crypto, localStorage)
+    const req = SignedRequest(ky, keypair, localStorage)
 
     await req.get('https://example.com', {
         hooks: {
@@ -171,7 +167,7 @@ test('verify a parsed token', async t => {
 
 test('create an instance with additional params', async t => {
     const opts = { username: 'alice' }
-    const req = SignedRequest(ky, crypto, 0, opts)
+    const req = SignedRequest(ky, keypair, 0, opts)
 
     await req.get('https://example.com/', {
         hooks: {

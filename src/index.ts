@@ -1,4 +1,3 @@
-import type { Implementation } from '@oddjs/odd/components/crypto/implementation'
 import {
     type SignedMessage as SignedMsg,
     create as createMsg,
@@ -11,6 +10,7 @@ export { parseHeader, parseToken }
 
 /**
  * Create a `ky` that will add a signed Bearer token to each request.
+ *
  * @param ky Ky library
  * @param {Implementation} crypto The crypto object from odd
  * @param startingSeq The number to start from, or a localstorage instance
@@ -18,7 +18,7 @@ export { parseHeader, parseToken }
  */
 export function SignedRequest (
     ky:KyInstance,
-    crypto:Implementation,
+    keypair:CryptoKeyPair,
     startingSeq:number|Storage,
     opts?:Record<string, any>
 ):KyInstance {
@@ -50,7 +50,7 @@ export function SignedRequest (
                     }
 
                     req.headers.set('Authorization',
-                        await createHeader(crypto, seq, opts))
+                        await createHeader(keypair, seq, opts))
                 }
             ]
         }
@@ -60,7 +60,7 @@ export function SignedRequest (
 export type ParsedHeader = SignedMsg<{ seq:number }>
 
 export function HeaderFactory (
-    crypto:Implementation,
+    keypair:CryptoKeyPair,
     opts?:Record<string, any>,
     ls?:Storage
 ):()=>Promise<`Bearer ${string}`> {
@@ -79,7 +79,7 @@ export function HeaderFactory (
 
         seq++
         storage.setItem('__seq', String(seq))
-        const header = createHeader(crypto, seq, opts)
+        const header = createHeader(keypair, seq, opts)
         return header
     }
 }
@@ -89,7 +89,7 @@ export function HeaderFactory (
  * This is different than the header because this does not include 'Bearer '.
  */
 export function TokenFactory (
-    crypto:Implementation,
+    keypair:CryptoKeyPair,
     opts?:Record<string, any>,
     ls?:Storage
 ):()=>Promise<string> {
@@ -107,18 +107,19 @@ export function TokenFactory (
 
         seq++
         storage.setItem('__seq', String(seq))
-        const token = await createToken(crypto, seq, opts)
+        const token = await createToken(keypair, seq, opts)
         const encoded = btoa(JSON.stringify(token))
         return encoded
     }
 }
 
 export async function createHeader (
-    crypto:Implementation,
+    // crypto:Implementation,
+    keypair:CryptoKeyPair,
     seq:number,
     opts?:Record<string, any>,
 ):Promise<`Bearer ${string}`> {
-    return encodeToken(await createToken(crypto, seq, opts))
+    return encodeToken(await createToken(keypair, seq, opts))
 }
 
 export type Token<T> = SignedMsg<{
@@ -133,12 +134,12 @@ export function encodeToken<T> (token:Token<T>):`Bearer ${string}` {
 }
 
 export function createToken (
-    crypto:Implementation,
+    keypair:CryptoKeyPair,
     seq:number,
     opts?:Record<string, any>
 ):Promise<Token<typeof opts>> {
-    if (!opts) return createMsg(crypto, { seq })
-    return createMsg(crypto, { seq, ...opts })
+    if (!opts) return createMsg(keypair, { seq })
+    return createMsg(keypair, { seq, ...opts })
 }
 
 export function verify (header:string, seq?:number):Promise<boolean> {
