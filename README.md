@@ -13,7 +13,7 @@ The sequence number is an always incrementing integer. It is expected that a ser
 
 You can pass in either an integer or a localStorage instance. If you pass a localStorage instance, it will read the index `'__seq'`, which should be a number. If there is not a number stored there, we will start at `0`.
 
-## Contents
+<details><summary><h2>Contents</h2></summary>
 
 <!-- toc -->
 
@@ -38,6 +38,8 @@ You can pass in either an integer or a localStorage instance. If you pass a loca
   * [use localStorage for the sequence number](#use-localstorage-for-the-sequence-number)
 
 <!-- tocstop -->
+
+</details>
 
 ## install
 ```
