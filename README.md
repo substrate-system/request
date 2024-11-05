@@ -99,19 +99,9 @@ const isOk = await verifyParsed(parsedHeader, 3)  // <-- pass in a seq here
 -------
 
 
-## dependencies
-This should be ergonomic to use with the existing [odd crypto library](https://github.com/oddsdk/ts-odd).
-
-We also depend the library [ky](https://github.com/sindresorhus/ky) for requests. 
-
--------
-
 ## API
-Exported functions:
 
-----------------------------------
 ### SignedRequest
-----------------------------------
 Patch a `ky` instance so it makes all requests with a signed header.
 
 ```ts
@@ -157,9 +147,7 @@ const headerObject = parseHeader(request.headers.get('Authorization'))
 // }
 ```
 
------------------------------------------------------------
 ### HeaderFactory
------------------------------------------------------------
 Create a function that will create header tokens and read and write the sequence number from `localStorage`.
 
 ```ts
@@ -190,9 +178,7 @@ const header = await createHeader()  // read & update `__seq` in localStorage
 const createHeaderTwo = HeaderFactory(crypto, { test: 'param' }, localStorage)
 ```
 
------------------------------------------------------------
 ### createHeader
------------------------------------------------------------
 Create the base64 encoded header string
 
 ```ts
@@ -205,9 +191,7 @@ This will create a header that looks like this:
 `Bearer eyJzZXEiOj...`
 ```
 
------------------------------------------------------------
 ### verify
------------------------------------------------------------
 Check that the signature matches the given public key. Optionally takes a sequence number, and will return false if the header's sequence is not greater than the given sequence.
 
 ```ts
@@ -222,9 +206,7 @@ import { verify } from '@bicycle-codes/request'
 const isOk = await verify(header)
 ```
 
------------------------------------------------------------
 ### verifyParsed
------------------------------------------------------------
 Check the validity of a parsed token. Optionally takes a sequence number. If a `seq` number is not passed in, then this will only verify the signature.
 
 ```ts
@@ -244,9 +226,7 @@ const token = await createToken(crypto, 1)
 const isOk = await verifyParsed(parsedToken)
 ```
 
------------------------------------------------------------
 ### createToken
------------------------------------------------------------
 Create a token object. This is the value that is encoded to make a header.
 
 ```ts
@@ -267,9 +247,7 @@ const token = await createToken(crypto, 1, { example: 'testing' })
 t.equal(token.example, 'testing', 'should have an additional property')
 ```
 
------------------------------------------------------------
 ### encodeToken
------------------------------------------------------------
 Encode a token object as a base64 string
 
 ```ts
