@@ -54,17 +54,16 @@ and set the latest sequence number in `localStorage`.
 
 ### clientside
 ```js
-import { program as createProgram } from '@oddjs/odd'
+import { create as createKeys } from '@bicycle-codes/crypto-util/webcrypto/rsa'
 import { SignedRequest } from '@bicycle-codes/request'
 import ky from 'ky'
 
-// ...get a `program` from `odd`
+const keypair:CryptoKeyPair = await createKeys(KeyUse.Sign)
 
-const crypto = program.components.crypto
+// create a ky instance
+// pass in the storage to use, or a sequence number to start with
+const request = SignedRequest(ky, keypair, window.localStorage)
 
-// we read and write to '__seq' key in `localStorage`
-const request = SignedRequest(ky, crypto, winodw.localStorage)
-// `request` is an extended version of `ky`
 const response = await request.get('https://example.com')
 // request is sent with headers `{ Authorization: Bearer <credentials> }`
 ```

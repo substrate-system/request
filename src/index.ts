@@ -12,8 +12,8 @@ export { parseHeader, parseToken }
  * Create a `ky` that will add a signed Bearer token to each request.
  *
  * @param ky Ky library
- * @param {Implementation} crypto The crypto object from odd
- * @param startingSeq The number to start from, or a localstorage instance
+ * @param {CryptoKeyPair} kepair The crypto keypair to use.
+ * @param {number|Storage} startingSeq The number to start from, or a localstorage instance
  * @returns {KyInstance}
  */
 export function SignedRequest (
