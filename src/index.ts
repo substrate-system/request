@@ -114,7 +114,6 @@ export function TokenFactory (
 }
 
 export async function createHeader (
-    // crypto:Implementation,
     keypair:CryptoKeyPair,
     seq:number,
     opts?:Record<string, any>,

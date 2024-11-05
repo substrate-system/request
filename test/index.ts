@@ -90,7 +90,7 @@ test('parse header', t => {
     t.equal(typeof obj.signature, 'string', 'should have a signature')
 })
 
-let req
+let req:typeof ky
 test('create instance', async t => {
     req = SignedRequest(ky, keypair, 0)
 

@@ -7,7 +7,7 @@
 [![install size](https://flat.badgen.net/packagephobia/install/@bicycle-codes/request)](https://packagephobia.com/result?p=@bicycle-codes/request)
 ![license](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square)
 
-Use a `Bearer` token in an HTTP request to verify identity. This will sign an integer with the given [odd instance](https://github.com/oddsdk/ts-odd/blob/main/src/components/crypto/implementation.ts#L14), suitable for an access-control type of auth.
+Use a `Bearer` token in an HTTP request to verify identity. This will sign an integer with the given crypto keypair, suitable for an access-control type of auth.
 
 The sequence number is an always incrementing integer. It is expected that a server would remember the previous sequence number for this DID (public key), and check that the given sequence is larger than the previous sequence. Also it would check that the signature is valid.
 
@@ -103,12 +103,13 @@ const isOk = await verifyParsed(parsedHeader, 3)  // <-- pass in a seq here
 Patch a `ky` instance so it makes all requests with a signed header.
 
 ```ts
-import { KyInstance } from 'ky/distribution/types/ky'
+import type { KyInstance } from 'ky/distribution/types/ky'
 
 function SignedRequest (
     ky:KyInstance,
-    crypto:Implementation,
-    startingSeq:number|Storage
+    keypair:CryptoKeyPair,
+    startingSeq:number|Storage,
+    opts?:Record<string, any>
 ):KyInstance
 ```
 
@@ -121,13 +122,7 @@ request.headers.get('Authorization')
 #### example
 ```js
 import ky from 'ky-universal'
-import { program as createProgram } from '@oddjs/odd'
-import { SignedRequest, } from '@bicycle-codes/request'
-
-const program = await createProgram({
-    namespace: { creator: 'identity', name: 'example' }
-})
-const { crypto } = program.components
+import { SignedRequest } from '@bicycle-codes/request'
 
 // `req` is an instance of `ky`
 const req = SignedRequest(ky, crypto, 0)
@@ -158,16 +153,20 @@ function HeaderFactory (
 
 #### example
 ```ts
-import { program as createProgram } from '@oddjs/odd'
-import { HeaderFactory } from '@bicycle-codes/request'
+test('header factory', async t => {
+    const localStorage = new LocalStorage('./test-storage')
+    localStorage.setItem('__seq', '0')
 
-const program = await createProgram(
-    namespace: { creator: 'test', name: 'testing' },
+    const createHeader = HeaderFactory(keypair, {}, localStorage)
+    const header = await createHeader()
+    const header2 = await createHeader()
+    t.ok(header.includes('Bearer'), 'should include "Bearer" text')
+
+    const token = parseHeader(header)
+    const token2 = parseHeader(header2)
+    t.equal(token.seq, 1, 'should start at 0 sequence')
+    t.equal(token2.seq, 2, 'should increment the sequence number')
 })
-const { crypto } = program.components
-
-const createHeader = HeaderFactory(crypto)
-const header = await createHeader()  // read & update `__seq` in localStorage
 
 /**
  * Optionally can pass in a params object and
@@ -180,8 +179,11 @@ const createHeaderTwo = HeaderFactory(crypto, { test: 'param' }, localStorage)
 Create the base64 encoded header string
 
 ```ts
-import { Implementation } from '@oddjs/odd/components/crypto/implementation'
-async function createHeader (crypto:Implementation, seq:number)
+async function createHeader (
+    keypair:CryptoKeyPair,
+    seq:number,
+    opts?:Record<string, any>,
+):Promise<`Bearer ${string}`>
 ```
 
 This will create a header that looks like this:
@@ -278,18 +280,18 @@ import ky from 'ky-universal'
 let header:string
 // header is a base64 encoded string: `Bearer ${base64string}`
 
+let req:typeof ky
 test('create instance', async t => {
-    // `crypto` here is from `odd` -- `program.components.crypto`
-    const req = AuthRequest(ky, crypto, 0)
+    req = SignedRequest(ky, keypair, 0)
 
     await req.get('https://example.com/', {
         hooks: {
             afterResponse: [
                 (request:Request) => {
-                    header = request.headers.get('Authorization')
                     const obj = parseHeader(
                         request.headers.get('Authorization') as string
                     )
+                    console.log('**header obj**', obj)
                     t.ok(obj, 'should have an Authorization header in request')
                     t.equal(obj.seq, 1, 'should have the right sequence')
                 }
@@ -348,22 +350,14 @@ Pass in an instance of `localStorage`, and we will save the sequence number to `
 
 ```ts
 import { test } from '@nichoth/tapzero'
-import { assemble } from '@oddjs/odd'
-import { components } from '@ssc-hermes/node-components'
 import ky from 'ky-universal'
 import { LocalStorage } from 'node-localstorage'
 import { SignedRequest, parseHeader } from '@bicycle-codes/request'
 
 test('create an instance with localStorage', async t => {
-    const program = await assemble({
-        namespace: { creator: 'test', name: 'testing' },
-        debug: false
-    }, components)
-    const crypto = program.components.crypto
-
     const localStorage = new LocalStorage('./test-storage')
     localStorage.setItem('__seq', 3)
-    const req = SignedRequest(ky, crypto, localStorage)
+    const req = SignedRequest(ky, keypair, localStorage)
 
     await req.get('https://example.com', {
         hooks: {
