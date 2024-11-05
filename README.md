@@ -22,7 +22,6 @@ You can pass in either an integer or a localStorage instance. If you pass a loca
 - [example](#example)
   * [clientside](#clientside)
   * [serverside](#serverside)
-- [dependencies](#dependencies)
 - [API](#api)
   * [SignedRequest](#signedrequest)
   * [HeaderFactory](#headerfactory)
