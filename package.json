@@ -38,11 +38,11 @@
     }
   },
   "dependencies": {
-    "@bicycle-codes/crypto-util": "^0.2.3",
+    "@bicycle-codes/crypto-util": "^0.2.7",
     "@bicycle-codes/message": "^0.8.3"
   },
   "devDependencies": {
-    "@bicycle-codes/tapzero": "^0.10.3",
+    "@substrate-system/tapzero": "^0.10.3",
     "@typescript-eslint/eslint-plugin": "^8.7.0",
     "@typescript-eslint/parser": "^8.7.0",
     "auto-changelog": "^2.4.0",
@@ -73,5 +73,5 @@
     "url": "https://github.com/ssc-hermes/request/issues"
   },
   "homepage": "https://github.com/ssc-hermes/request",
-  "license": "MIT"
+  "license": "SEE LICENSE IN LICENSE"
 }
