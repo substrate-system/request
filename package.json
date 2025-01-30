@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "lint": "eslint \"./**/*.{ts,js}\"",
-    "test": "cd ./test && npm i && esbuild ./index.ts --bundle --platform=node --format=cjs | node | tap-spec",
+    "test": "npm run build && cd ./test && esbuild ./index.ts --bundle --platform=node --format=cjs | node | tap-spec",
     "build-cjs": "esbuild src/*.ts --tsconfig=tsconfig.build.json --format=cjs --keep-names --outdir=./dist --out-extension:.js=.cjs",
     "build": "mkdir -p ./dist && rm -rf ./dist/* && npm run build-cjs && tsc --project tsconfig.build.json",
     "toc": "markdown-toc --maxdepth 3 -i README.md",

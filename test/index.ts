@@ -1,4 +1,4 @@
-import { test } from '@bicycle-codes/tapzero'
+import { test } from '@substrate-system/tapzero'
 import ky from 'ky'
 import { create as createKeys } from '@bicycle-codes/crypto-util/webcrypto/rsa'
 import { LocalStorage } from 'node-localstorage'
@@ -11,7 +11,7 @@ import {
     verify,
     encodeToken,
     verifyParsed,
-} from '@bicycle-codes/request'
+} from '../dist/index.js'
 import { KeyUse } from '@bicycle-codes/crypto-util/types'
 import { parseHeader, parseToken } from '../dist/parse.js'
 
