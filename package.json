@@ -1,6 +1,6 @@
 {
   "name": "@bicycle-codes/request",
-  "version": "0.6.15",
+  "version": "0.6.16",
   "description": "Use a `Bearer` token with web crypto to authenticate.",
   "directories": {
     "test": "test"
