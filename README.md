@@ -8,12 +8,18 @@
 [![license](https://img.shields.io/badge/license-Polyform_Non_Commercial-26bc71?style=flat-square)](LICENSE)
 
 
+Use a `Bearer` token in an HTTP request to verify identity. This will sign an
+integer with the given crypto keypair, suitable for an access-control type
+of auth.
 
-Use a `Bearer` token in an HTTP request to verify identity. This will sign an integer with the given crypto keypair, suitable for an access-control type of auth.
+The sequence number is an always incrementing integer. It is expected that a
+server would remember the previous sequence number for this DID (public key),
+and check that the given sequence is larger than the previous sequence. Also
+it would check that the signature is valid.
 
-The sequence number is an always incrementing integer. It is expected that a server would remember the previous sequence number for this DID (public key), and check that the given sequence is larger than the previous sequence. Also it would check that the signature is valid.
-
-You can pass in either an integer or a localStorage instance. If you pass a localStorage instance, it will read the index `'__seq'`, which should be a number. If there is not a number stored there, we will start at `0`.
+You can pass in either an integer or a localStorage instance. If you pass a
+`localStorage` instance, it will read the index `'__seq'`, which should be a
+number. If there is not a number stored there, we will start at `0`.
 
 <details><summary><h2>Contents</h2></summary>
 
@@ -43,7 +49,7 @@ You can pass in either an integer or a localStorage instance. If you pass a loca
 </details>
 
 ## install
-```
+```sh
 npm i -S @bicycle-codes/request
 ```
 
@@ -143,11 +149,12 @@ const headerObject = parseHeader(request.headers.get('Authorization'))
 ```
 
 ### HeaderFactory
-Create a function that will create header tokens and read and write the sequence number from `localStorage`.
+Create a function that will create header tokens and read and write the
+sequence number from `localStorage`.
 
 ```ts
 function HeaderFactory (
-    crypto:Implementation,
+    keypair:CryptoKeyPair,
     opts?:Record<string, any>,
     ls?:Storage
 ):()=>Promise<`Bearer ${string}`>
@@ -194,7 +201,9 @@ This will create a header that looks like this:
 ```
 
 ### verify
-Check that the signature matches the given public key. Optionally takes a sequence number, and will return false if the header's sequence is not greater than the given sequence.
+Check that the signature matches the given public key. Optionally takes a
+sequence number, and will return false if the header's sequence is not greater
+than the given sequence.
 
 ```ts
 // take a base64 encoded header string
@@ -209,7 +218,8 @@ const isOk = await verify(header)
 ```
 
 ### verifyParsed
-Check the validity of a parsed token. Optionally takes a sequence number. If a `seq` number is not passed in, then this will only verify the signature.
+Check the validity of a parsed token. Optionally takes a sequence number. If a
+`seq` number is not passed in, then this will only verify the signature.
 
 ```ts
 import { SignedRequest as SignedMsg } from '@bicycle-codes/message'
@@ -233,7 +243,7 @@ Create a token object. This is the value that is encoded to make a header.
 
 ```ts
 function createToken (
-    crypto:Implementation,
+    keypair:CryptoKeyPair,
     seq:number,
     opts?:Record<string, any>
 ):Promise<Token<typeof opts>>
