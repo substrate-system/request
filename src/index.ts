@@ -57,7 +57,7 @@ export function SignedRequest (
     })
 }
 
-export type ParsedHeader = SignedMsg<{ seq:number }>
+export type ParsedHeader<T=any> = SignedMsg<{ seq:number } & T>
 
 export function HeaderFactory (
     keypair:CryptoKeyPair,
