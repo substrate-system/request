@@ -62,7 +62,7 @@ and set the latest sequence number in `localStorage`.
 
 ### clientside
 ```js
-import { create as createKeys } from '@bicycle-codes/crypto-util/webcrypto/rsa'
+import { KeyUse, create as createKeys } from '@bicycle-codes/crypto-util/webcrypto/rsa'
 import { SignedRequest } from '@bicycle-codes/request'
 import ky from 'ky'
 
