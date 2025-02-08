@@ -7,8 +7,6 @@
 [![install size](https://flat.badgen.net/packagephobia/install/@bicycle-codes/request)](https://packagephobia.com/result?p=@bicycle-codes/request)
 [![license](https://img.shields.io/badge/license-Polyform_Strict-f52f2f?style=flat-square)](LICENSE)
 
-#
-
 Use a `Bearer` token in an HTTP request to verify identity. This will sign an
 integer with the given crypto keypair, suitable for an access-control type
 of auth.
