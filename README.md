@@ -5,8 +5,9 @@
 ![types](https://img.shields.io/npm/types/@bicycle-codes/request?style=flat-square)
 [![semantic versioning](https://img.shields.io/badge/semver-2.0.0-blue?logo=semver&style=flat-square)](https://semver.org/)
 [![install size](https://flat.badgen.net/packagephobia/install/@bicycle-codes/request)](https://packagephobia.com/result?p=@bicycle-codes/request)
-[![license](https://img.shields.io/badge/license-Polyform_Non_Commercial-26bc71?style=flat-square)](LICENSE)
+[![license](https://img.shields.io/badge/license-Polyform_Strict-f52f2f?style=flat-square)](LICENSE)
 
+#
 
 Use a `Bearer` token in an HTTP request to verify identity. This will sign an
 integer with the given crypto keypair, suitable for an access-control type
