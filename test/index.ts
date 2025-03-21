@@ -1,6 +1,6 @@
 import { test } from '@substrate-system/tapzero'
 import ky from 'ky'
-import { create as createKeys } from '@bicycle-codes/crypto-util/webcrypto/rsa'
+import { Keys } from '@bicycle-codes/keys'
 import { LocalStorage } from 'node-localstorage'
 import {
     TokenFactory,
@@ -12,7 +12,6 @@ import {
     encodeToken,
     verifyParsed,
 } from '../dist/index.js'
-import { KeyUse } from '@bicycle-codes/crypto-util/types'
 import { parseHeader, parseToken } from '../dist/parse.js'
 
 // for localStorage test
@@ -20,7 +19,11 @@ globalThis.Storage = LocalStorage
 
 let keypair:CryptoKeyPair
 test('setup', async t => {
-    keypair = await createKeys(KeyUse.Sign)
+    const keys = await Keys.create()
+    keypair = {
+        privateKey: keys.privateSignKey,
+        publicKey: keys.publicSignKey
+    }
 
     t.ok(keypair, 'create a keypair')
 })

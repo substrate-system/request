@@ -61,11 +61,14 @@ and set the latest sequence number in `localStorage`.
 
 ### clientside
 ```js
-import { KeyUse, create as createKeys } from '@bicycle-codes/crypto-util/webcrypto/rsa'
-import { SignedRequest } from '@bicycle-codes/request'
+import { Keys } from '@bicycle-codes/keys'
 import ky from 'ky'
 
-const keypair:CryptoKeyPair = await createKeys(KeyUse.Sign)
+const keys = await Keys.create()
+const keypair = {
+    privateKey: keys.privateSignKey,
+    publicKey: keys.publicSignKey
+}
 
 // create a ky instance
 // pass in the storage to use, or a sequence number to start with

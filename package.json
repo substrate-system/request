@@ -38,10 +38,10 @@
     }
   },
   "dependencies": {
-    "@bicycle-codes/crypto-util": "^0.2.8",
     "@bicycle-codes/message": "^0.8.4"
   },
   "devDependencies": {
+    "@bicycle-codes/keys": "^0.1.12",
     "@substrate-system/tapzero": "^0.10.13",
     "@typescript-eslint/eslint-plugin": "^8.7.0",
     "@typescript-eslint/parser": "^8.7.0",
