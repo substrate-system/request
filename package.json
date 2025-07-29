@@ -1,5 +1,5 @@
 {
-  "name": "@bicycle-codes/request",
+  "name": "@substrate-system/request",
   "version": "0.7.0",
   "description": "Use a `Bearer` token with web crypto to authenticate.",
   "directories": {
@@ -38,10 +38,10 @@
     }
   },
   "dependencies": {
-    "@bicycle-codes/message": "^0.9.1"
+    "@substrate-system/message": "^0.9.1"
   },
   "devDependencies": {
-    "@bicycle-codes/keys": "^0.1.12",
+    "@substrate-system/keys": "^0.1.12",
     "@substrate-system/tapzero": "^0.10.13",
     "@typescript-eslint/eslint-plugin": "^8.7.0",
     "@typescript-eslint/parser": "^8.7.0",
@@ -60,7 +60,7 @@
   "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bicycle-codes/request"
+    "url": "https://github.com/substrate-system/request"
   },
   "keywords": [
     "request",
@@ -70,8 +70,8 @@
     "http"
   ],
   "bugs": {
-    "url": "https://github.com/bicycle-codes/request/issues"
+    "url": "https://github.com/substrate-system/request/issues"
   },
-  "homepage": "https://github.com/bicycle-codes/request",
+  "homepage": "https://github.com/substrate-system/request",
   "license": "SEE LICENSE IN LICENSE"
 }
