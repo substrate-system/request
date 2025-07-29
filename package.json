@@ -38,7 +38,7 @@
     }
   },
   "dependencies": {
-    "@substrate-system/message": "^0.9.1"
+    "@substrate-system/message": "^0.10.1"
   },
   "devDependencies": {
     "@substrate-system/keys": "^0.2.3",
