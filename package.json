@@ -41,20 +41,20 @@
     "@substrate-system/message": "^0.9.1"
   },
   "devDependencies": {
-    "@substrate-system/keys": "^0.1.12",
-    "@substrate-system/tapzero": "^0.10.13",
+    "@substrate-system/keys": "^0.2.3",
+    "@substrate-system/tapzero": "^0.10.15",
     "@typescript-eslint/eslint-plugin": "^8.7.0",
     "@typescript-eslint/parser": "^8.7.0",
     "auto-changelog": "^2.4.0",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.25.8",
     "eslint": "^8.57.0",
     "eslint-config-standard": "^17.1.0",
-    "ky": "^1.7.4",
+    "ky": "^1.8.2",
     "markdown-toc": "^1.2.0",
     "node-localstorage": "^3.0.5",
     "tap-spec": "^5.0.0",
     "tape-run": "^11.0.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.3"
   },
   "author": "nichoth <nichoth@nichoth.com> (https://nichoth.com)",
   "types": "./dist/index.d.ts",
