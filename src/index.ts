@@ -2,7 +2,7 @@ import {
     type SignedMessage as SignedMsg,
     create as createMsg,
     verify as msgVerify
-} from '@bicycle-codes/message'
+} from '@substrate-system/message'
 import type { KyInstance } from 'ky'
 import { parseHeader, parseToken } from './parse.js'
 
