@@ -1,6 +1,6 @@
 {
   "name": "@substrate-system/request",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Use a `Bearer` token with web crypto to authenticate.",
   "directories": {
     "test": "test"
