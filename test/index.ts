@@ -1,6 +1,6 @@
 import { test } from '@substrate-system/tapzero'
 import ky from 'ky'
-import { Keys } from '@substrate-system/keys'
+import { RsaKeys as Keys } from '@substrate-system/keys/rsa'
 import { LocalStorage } from 'node-localstorage'
 import {
     TokenFactory,
