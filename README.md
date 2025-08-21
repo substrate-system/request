@@ -63,6 +63,7 @@ and set the latest sequence number in `localStorage`.
 ### Clientside
 ```js
 import { Keys } from '@substrate-system/keys'
+import { SignedRequest } from '@substrate-system/request'
 import ky from 'ky'
 
 const keys = await Keys.create()
