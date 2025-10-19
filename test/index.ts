@@ -1,6 +1,6 @@
 import { test } from '@substrate-system/tapzero'
 import ky from 'ky'
-import { RsaKeys as Keys } from '@substrate-system/keys/rsa'
+import { EccKeys as Keys } from '@substrate-system/keys/ecc'
 import { LocalStorage } from 'node-localstorage'
 import {
     TokenFactory,
@@ -11,11 +11,17 @@ import {
     verify,
     encodeToken,
     verifyParsed,
-} from '../dist/index.js'
-import { parseHeader, parseToken } from '../dist/parse.js'
+    type Token,
+} from '../src/index.js'
+import { parseHeader, parseToken } from '../src/parse.js'
 
 // for localStorage test
-globalThis.Storage = LocalStorage
+class StoragePolyfill extends LocalStorage {
+    constructor () {
+        super('./test-storage')
+    }
+}
+globalThis.Storage = StoragePolyfill as any
 
 let keys:InstanceType<typeof Keys>
 test('setup', async t => {
@@ -108,7 +114,8 @@ test('create instance', async t => {
     })
 })
 
-let parsedToken
+// let parsedToken:Token
+let parsedToken:Token<{ seq:number }>
 test('make another request', async t => {
     await req.get('https://example.com', {
         hooks: {
@@ -137,7 +144,7 @@ test('verify an invalid token', async t => {
 
 test('create an instance with localStorage', async t => {
     const localStorage = new LocalStorage('./test-storage')
-    localStorage.setItem('__seq', 3)
+    localStorage.setItem('__seq', '3')
     const req = SignedRequest(ky, keys, localStorage)
 
     await req.get('https://example.com', {
@@ -155,7 +162,7 @@ test('create an instance with localStorage', async t => {
     })
 
     const seq = localStorage.getItem('__seq')
-    t.equal(seq, 4, 'should save the sequence number to localStorage')
+    t.equal(seq, '4', 'should save the sequence number to localStorage')
 })
 
 test('verify a parsed token', async t => {
