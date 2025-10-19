@@ -43,10 +43,7 @@ export function SignedRequest (
                     // increment seq
                     // and save it in localstorage
                     seq++
-                    if (
-                        (typeof Storage !== 'undefined') &&
-                        (startingSeq instanceof Storage)
-                    ) {
+                    if (typeof startingSeq !== 'number') {
                         startingSeq.setItem('__seq', String(seq))
                     }
 
