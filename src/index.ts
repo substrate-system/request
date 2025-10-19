@@ -4,8 +4,8 @@ import {
     verify as msgVerify
 } from '@substrate-system/message'
 import type { KyInstance } from 'ky'
-import { parseHeader, parseToken } from './parse.js'
 import { type AbstractKeys } from '@substrate-system/keys'
+import { parseHeader, parseToken } from './parse.js'
 
 export { parseHeader, parseToken }
 
