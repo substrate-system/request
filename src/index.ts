@@ -3,8 +3,8 @@ import {
     create as createMsg,
     verify as msgVerify
 } from '@substrate-system/message'
+import { publicKeyToDid } from '@substrate-system/keys/crypto'
 import type { KyInstance } from 'ky'
-import { type AbstractKeys } from '@substrate-system/keys'
 import { parseHeader, parseToken } from './parse.js'
 
 export { parseHeader, parseToken }
@@ -19,7 +19,7 @@ export { parseHeader, parseToken }
  */
 export function SignedRequest (
     ky:KyInstance,
-    keypair:AbstractKeys,
+    keypair:CryptoKeyPair,
     startingSeq:number|Storage,
     opts?:Record<string, any>
 ):KyInstance {
@@ -58,7 +58,7 @@ export function SignedRequest (
 export type ParsedHeader<T=any> = SignedMsg<{ seq:number } & T>
 
 export function HeaderFactory (
-    keypair:AbstractKeys,
+    keypair:CryptoKeyPair,
     opts?:Record<string, any>,
     ls?:Storage
 ):()=>Promise<`Bearer ${string}`> {
@@ -87,7 +87,7 @@ export function HeaderFactory (
  * This is different than the header because this does not include 'Bearer '.
  */
 export function TokenFactory (
-    keypair:AbstractKeys,
+    keypair:CryptoKeyPair,
     opts?:Record<string, any>,
     ls?:Storage
 ):()=>Promise<string> {
@@ -112,7 +112,7 @@ export function TokenFactory (
 }
 
 export async function createHeader (
-    keypair:AbstractKeys,
+    keypair:CryptoKeyPair,
     seq:number,
     opts?:Record<string, any>,
 ):Promise<`Bearer ${string}`> {
@@ -131,7 +131,7 @@ export function encodeToken<T> (token:Token<T>):`Bearer ${string}` {
 }
 
 export function createToken (
-    keypair:AbstractKeys,
+    keypair:CryptoKeyPair,
     seq:number,
     opts?:Record<string, any>
 ):Promise<Token<typeof opts>> {
