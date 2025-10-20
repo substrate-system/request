@@ -13,13 +13,18 @@ integer with the given crypto keypair, suitable for an access-control type
 of auth.
 
 The sequence number is an always incrementing integer. It is expected that a
-server would remember the previous sequence number for this DID (public key),
-and check that the given sequence is larger than the previous sequence. Also
-it would check that the signature is valid.
+server, in addition to checking that the signature is valid,
+would remember the previous sequence number for this DID / public key, and
+check that the given number is larger than the previous one, to prevent
+replay attacks.
 
 You can pass in either an integer or a localStorage instance. If you pass a
 `localStorage` instance, it will read the index `'__seq'`, which should be a
-number. If there is not a number stored there, we will start at `0`.
+number. If there is not a number stored there, it will start at `0`.
+
+This package includes some opinions. I like to use [ky](https://github.com/sindresorhus/ky),
+so this includes an API that will create a `ky` instance.
+
 
 <details><summary><h2>Contents</h2></summary>
 
@@ -54,22 +59,32 @@ npm i -S @substrate-system/request
 ```
 
 ## Globals
-This reads and writes to `__seq` key in `localStorage`.
+
+This reads and writes to the `__seq` key in `localStorage`.
+
+## Dependencies
+
+This depends on [message](https://github.com/substrate-system/message) to
+create the signed token.
+
 
 ## Example
-Create a new `ky` instance that will add a signed header to every request,
-and set the latest sequence number in `localStorage`.
+
+Create a new [ky](https://github.com/sindresorhus/ky) instance that will add a
+signed header to every request, and also set the latest sequence
+number in `localStorage`.
 
 ### Clientside
+
 ```js
-import { Keys } from '@substrate-system/keys'
+import { EccKeys as Keys } from '@substrate-system/keys/ecc'
 import { SignedRequest } from '@substrate-system/request'
 import ky from 'ky'
 
 const keys = await Keys.create()
 const keypair = {
-    privateKey: keys.privateSignKey,
-    publicKey: keys.publicSignKey
+    privateKey: keys.writeKey.privateKey
+    publicKey: keys.writeKey.publicKey
 }
 
 // create a ky instance
@@ -80,8 +95,10 @@ const response = await request.get('https://example.com')
 // request is sent with headers `{ Authorization: Bearer <credentials> }`
 ```
 
+
 ### Serverside
-Parse the header string, and check the sequence number
+
+Parse the header string, and check the sequence number.
 
 ```ts
 import {
@@ -93,12 +110,14 @@ import type { ParsedHeader } from '@substrate-system/request'
 const headerString = request.headers.Authorization
 const parsedHeader:ParsedHeader = parseHeader(headerString)
 const { seq } = parsedHeader
+
 // ...get the previous sequence number somehow...
+
 const isOk = await verifyParsed(parsedHeader)   // check signature
 const isSequenceOk = (seq > lastSequence)  // check sequence number
 ```
 
-Or, pass in a sequence number to check that `header.seq` is greater than
+Or, pass in a sequence number to check that `parsedHeader.seq` is greater than.
 
 ```js
 const headerString = request.headers.Authorization
@@ -112,6 +131,7 @@ const isOk = await verifyParsed(parsedHeader, 3)  // <-- pass in a seq here
 ## API
 
 ### SignedRequest
+
 Patch a `ky` instance so it makes all requests with a signed header.
 
 ```ts
@@ -126,12 +146,14 @@ function SignedRequest (
 ```
 
 The request will have an `Authorization` header, base64 encoded:
+
 ```js
 request.headers.get('Authorization')
 // => "Bearer eyJzZXEiOjEsIm..."
 ```
 
 #### Example
+
 ```js
 import ky from 'ky-universal'
 import { SignedRequest } from '@substrate-system/request'
@@ -153,6 +175,7 @@ const headerObject = parseHeader(request.headers.get('Authorization'))
 ```
 
 ### HeaderFactory
+
 Create a function that will create header tokens and read and write the
 sequence number from `localStorage`.
 
@@ -165,6 +188,7 @@ function HeaderFactory (
 ```
 
 #### Example
+
 ```ts
 test('header factory', async t => {
     const localStorage = new LocalStorage('./test-storage')
@@ -189,6 +213,7 @@ const createHeaderTwo = HeaderFactory(crypto, { test: 'param' }, localStorage)
 ```
 
 ### `createHeader`
+
 Create the base64 encoded header string
 
 ```ts
@@ -215,6 +240,7 @@ function verify (header:string, seq?:number):Promise<boolean>
 ```
 
 #### Example
+
 ```js
 import { verify } from '@substrate-system/request'
 
@@ -222,6 +248,7 @@ const isOk = await verify(header)
 ```
 
 ### `verifyParsed`
+
 Check the validity of a parsed token. Optionally takes a sequence number. If a
 `seq` number is not passed in, then this will only verify the signature.
 
@@ -235,6 +262,7 @@ function verifyParsed (
 ```
 
 #### Example
+
 ```ts
 import { verifyParsed, create as createToken } from '@substrate-system/request'
 
@@ -243,6 +271,7 @@ const isOk = await verifyParsed(parsedToken)
 ```
 
 ### `createToken`
+
 Create a token object. This is the value that is encoded to make a header.
 
 ```ts
@@ -254,6 +283,7 @@ function createToken (
 ```
 
 #### Example
+
 You can pass additional arguments to `createToken`, which will be added to the
 signed token object.
 
@@ -265,6 +295,7 @@ t.equal(token.example, 'testing', 'should have an additional property')
 ```
 
 ### `encodeToken`
+
 Encode a token object as a base64 string
 
 ```ts
@@ -272,6 +303,7 @@ function encodeToken<T> (token:Token<T>):`Bearer ${string}`
 ```
 
 #### Example
+
 ```js
 import { encodeToken } from '@substrate-system/request'
 const encoded = encodeToken(token)
@@ -282,6 +314,7 @@ const encoded = encodeToken(token)
 ## More Examples
 
 ### Create an Instance
+
 In a web browser, pass an instance of [ky](https://github.com/sindresorhus/ky),
 and return an extended instance of `ky`, that will automatically add a
 signature to the header as a `Bearer` token.
@@ -321,10 +354,11 @@ test('create instance', async t => {
 ```
 
 ### Verify a Token
+
 Check if a given signature matches the given public key. You would probably
 call this in server-side code. This only checks that the public key and
 signature are ok together. In real life you would need to check that the
-public key is something valid in your system as well as calling `verify` here.
+public key has meaning to your system in addition to calling `verify` here.
 
 ```ts
 test('parse header', t => {
@@ -344,6 +378,7 @@ test('verify the header', async t => {
 ```
 
 ### Parse a Token
+
 This is distinct from parsing a "header" because the token does not include
 the text "Bearer".
 
@@ -369,6 +404,7 @@ test('token factory', async t => {
 ```
 
 ### Use localStorage for the sequence number
+
 Pass in an instance of `localStorage`, and we will save the sequence number
 to `__seq` on any request.
 

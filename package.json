@@ -70,7 +70,8 @@
     "signed",
     "headers",
     "webcrypto",
-    "http"
+    "http",
+    "token"
   ],
   "bugs": {
     "url": "https://github.com/substrate-system/request/issues"
