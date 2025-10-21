@@ -41,8 +41,8 @@
     }
   },
   "dependencies": {
-    "@substrate-system/keys": "^0.2.32",
-    "@substrate-system/message": "^0.11.2"
+    "@substrate-system/keys": "^0.2.33",
+    "@substrate-system/message": "^0.11.3"
   },
   "devDependencies": {
     "@substrate-system/tapzero": "^0.10.15",
