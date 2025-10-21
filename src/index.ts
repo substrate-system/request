@@ -3,7 +3,6 @@ import {
     create as createMsg,
     verify as msgVerify
 } from '@substrate-system/message'
-import { publicKeyToDid } from '@substrate-system/keys/crypto'
 import type { KyInstance } from 'ky'
 import { parseHeader, parseToken } from './parse.js'
 

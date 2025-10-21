@@ -7,5 +7,7 @@ dist
 .env
 test-storage
 test/test-token
-
 .claude
+test/test-token
+test-token
+

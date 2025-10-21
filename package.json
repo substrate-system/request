@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "lint": "eslint \"./**/*.{ts,js}\"",
-    "test": "npm run build && cd ./test && esbuild ./index.ts --bundle --platform=node --format=cjs | node | tap-spec",
+    "test": "esbuild ./test/index.ts --bundle --platform=node | node",
     "build-cjs": "esbuild src/*.ts --format=cjs --keep-names --tsconfig=tsconfig.build.json --outdir=./dist --out-extension:.js=.cjs --sourcemap",
     "build-cjs:min": "esbuild src/*.ts --format=cjs --minify --keep-names --tsconfig=tsconfig.build.json --outdir=./dist --out-extension:.js=.min.cjs --sourcemap",
     "build-esm": "esbuild src/*.ts --format=esm --metafile=dist/meta.json --keep-names --tsconfig=tsconfig.build.json --outdir=./dist --sourcemap && tsc --emitDeclarationOnly --project tsconfig.build.json --outDir dist",
@@ -41,8 +41,8 @@
     }
   },
   "dependencies": {
-    "@substrate-system/keys": "^0.2.27",
-    "@substrate-system/message": "^0.10.5"
+    "@substrate-system/keys": "^0.2.32",
+    "@substrate-system/message": "^0.11.2"
   },
   "devDependencies": {
     "@substrate-system/tapzero": "^0.10.15",

@@ -31,7 +31,9 @@ test('setup', async t => {
 
 let token:Awaited<ReturnType<typeof createToken>>
 test('create a token', async t => {
-    token = await createToken(keys, 1)
+    t.plan(3)
+    token = await createToken(keys.writeKey, 1)
+    console.log('token', token)
 
     t.ok(token.author.includes('did:key:'), 'should have "author" field')
     t.ok(token.signature, 'should have a signature')
@@ -43,7 +45,7 @@ test('verify the token', async t => {
 })
 
 test('create a token with additional properties', async t => {
-    const token = await createToken(keys, 1, { example: 'testing' })
+    const token = await createToken(keys.writeKey, 1, { example: 'testing' })
     t.equal(token.example, 'testing', 'should have an additional property')
 })
 
@@ -54,7 +56,7 @@ test('base64 encode the token', t => {
 
 let header:string
 test('create a header', async t => {
-    header = await createHeader(keys, 1)
+    header = await createHeader(keys.writeKey, 1)
     t.ok(header, 'should return a header')
     t.ok(header.includes('Bearer '), 'should include the word "bearer"')
 })
@@ -62,7 +64,7 @@ test('create a header', async t => {
 test('header factory', async t => {
     const localStorage = new LocalStorage('./test-storage')
     localStorage.setItem('__seq', '0')
-    const createHeader = HeaderFactory(keys, {}, localStorage)
+    const createHeader = HeaderFactory(keys.writeKey, {}, localStorage)
     const header = await createHeader()
     const header2 = await createHeader()
     t.ok(header.includes('Bearer'), 'should include "Bearer" text')
@@ -75,7 +77,7 @@ test('header factory', async t => {
 test('token factory', async t => {
     const ls = new LocalStorage('./test-token')
     ls.setItem('__seq', '0')
-    const createToken = TokenFactory(keys, {}, ls)
+    const createToken = TokenFactory(keys.writeKey, {}, ls)
     const token = await createToken()
     t.ok(!token.includes('Bearer'),
         'should not include "Bearer" text in the token')
@@ -96,7 +98,7 @@ test('parse header', t => {
 
 let req:typeof ky
 test('create instance', async t => {
-    req = SignedRequest(ky, keys, 0)
+    req = SignedRequest(ky, keys.writeKey, 0)
 
     await req.get('https://example.com/', {
         hooks: {
@@ -145,7 +147,7 @@ test('verify an invalid token', async t => {
 test('create an instance with localStorage', async t => {
     const localStorage = new LocalStorage('./test-storage')
     localStorage.setItem('__seq', '3')
-    const req = SignedRequest(ky, keys, localStorage)
+    const req = SignedRequest(ky, keys.writeKey, localStorage)
 
     await req.get('https://example.com', {
         hooks: {
@@ -172,7 +174,7 @@ test('verify a parsed token', async t => {
 
 test('create an instance with additional params', async t => {
     const opts = { username: 'alice' }
-    const req = SignedRequest(ky, keys, 0, opts)
+    const req = SignedRequest(ky, keys.writeKey, 0, opts)
 
     await req.get('https://example.com/', {
         hooks: {
