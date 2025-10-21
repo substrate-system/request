@@ -32,6 +32,7 @@ so this includes an API that will create a `ky` instance.
 
 - [Install](#install)
 - [Globals](#globals)
+- [Dependencies](#dependencies)
 - [Example](#example)
   * [Clientside](#clientside)
   * [Serverside](#serverside)
